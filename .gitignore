@@ -1,0 +1,7 @@
+# Ignore Idea shit...
+.idea/
+
+# Ignore library, binary, and object files.
+lib/
+bin/
+obj/
