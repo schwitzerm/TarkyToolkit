@@ -1,10 +1,10 @@
-﻿using TarkyToolkit.Context;
+﻿using UnityEngine;
 
 namespace TarkyToolkit.Patch;
 
 internal abstract class InternalTarkyPatch : TarkyPatch
 {
-    protected InternalTarkyPatch(TarkovContext context) : base(context)
+    protected InternalTarkyPatch(GameObject rootObject) : base(rootObject)
     {
     }
 }

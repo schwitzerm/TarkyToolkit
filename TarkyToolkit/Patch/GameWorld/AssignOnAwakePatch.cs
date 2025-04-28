@@ -2,8 +2,10 @@
 using System.Reflection;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
+using TarkyToolkit.Api;
 using TarkyToolkit.Context;
 using TarkyToolkit.Shared.Utils;
+using UnityEngine;
 
 namespace TarkyToolkit.Patch.GameWorld;
 
@@ -17,7 +19,7 @@ internal class AssignOnAwakePatch : InternalTarkyPatch
 {
     public override bool FatalOnPatchError => true;
 
-    public AssignOnAwakePatch(TarkovContext context) : base(context)
+    public AssignOnAwakePatch(GameObject rootObject) : base(rootObject)
     {
     }
 
@@ -32,18 +34,34 @@ internal class AssignOnAwakePatch : InternalTarkyPatch
     // ReSharper disable once InconsistentNaming
     private static void Postfix(EFT.GameWorld __instance)
     {
-        TarkyToolkit.Logger.LogDebug("TarkyToolkit.Patch.GameWorld.AssignOnAwakePatch.Postfix() entered.");
-        if (__instance == null)
+        try
         {
-            throw new NullReferenceException("GameWorld reference is null on Awake. Something is seriously wrong!");
-        }
+            if (__instance == null)
+            {
+                throw new NullReferenceException("GameWorld reference is null on Awake. Something is seriously wrong!");
+            }
 
-        if (TarkovContext == null)
+            if (TarkovContext == null)
+            {
+                throw new NullReferenceException("TarkovContext reference is null.");
+            }
+
+            if (__instance != null)
+            {
+                TarkovContext.GameWorld = __instance;
+                TarkyToolkit.Logger.LogDebug("GameWorld reference assigned.");
+            }
+
+            if (GameWorldApi.Player != null)
+            {
+                var playerName = GameWorldApi.Player.Profile.Nickname;
+                TarkyToolkit.Logger.LogDebug($"Player found! The player's name is: {playerName}.");
+            }
+        }
+        catch (Exception)
         {
-            throw new NullReferenceException("TarkovContext reference is null.");
+            TarkyToolkit.Logger.LogError("Failed to assign GameWorld reference.");
+            throw;
         }
-
-        TarkovContext.GameWorld = __instance;
-        TarkyToolkit.Logger.LogDebug("Exiting TarkyToolkit.Patch.GameWorld.AssignOnAwakePatch.Postfix().");
     }
 }

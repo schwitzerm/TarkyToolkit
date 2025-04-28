@@ -28,34 +28,37 @@ public class TarkyToolkit : BaseUnityPlugin
             Logger = new BepLogger(base.Logger);
             Logger.LogDebug("Initializing TarkyToolkit.");
 
-            Logger.LogDebug("Creating InternalTarkyPatchContext.");
+            Logger.LogDebug("Checking if InternalTarkyPatchContext singleton was created and registered successfully.");
             _internalTarkyPatchContext = gameObject.AddComponent<InternalTarkyPatchContext>();
             DontDestroyOnLoad(_internalTarkyPatchContext);
-            Logger.LogDebug("InternalTarkyPatchContext created and marked as DontDestroyOnLoad.");
+            if (gameObject.GetComponent<InternalTarkyPatchContext>() == null)
+            {
+                throw new NullReferenceException("InternalTarkyPatchContext singleton was not found.");
+            }
 
-            Logger.LogDebug("Creating TarkyPatchContext.");
+            Logger.LogDebug("Checking if TarkyPatchContext singleton was created and registered successfully.");
             _tarkyPatchContext = gameObject.AddComponent<TarkyPatchContext>();
             DontDestroyOnLoad(_tarkyPatchContext);
-            Logger.LogDebug("TarkyPatchContext created and marked as DontDestroyOnLoad.");
+            if (gameObject.GetComponent<TarkyPatchContext>() == null)
+            {
+                throw new NullReferenceException("TarkyPatchContext singleton was not found.");
+            }
 
-            Logger.LogDebug("Creating TarkovContext.");
+            Logger.LogDebug("Checking if TarkovContext singleton was created and registered successfully.");
             _tarkovContext = gameObject.AddComponent<TarkovContext>();
             DontDestroyOnLoad(_tarkovContext);
-            Logger.LogDebug("TarkovContext created and marked as DontDestroyOnLoad.");
+            if (gameObject.GetComponent<TarkovContext>() == null)
+            {
+                throw new NullReferenceException("TarkovContext singleton was not found.");
+            }
 
             Logger.LogDebug("Enabling internal patches.");
             InternalTarkyPatch[] internalToApply =
             [
-                new Patch.GameWorld.AssignOnAwakePatch(_tarkovContext),
-                new Patch.Player.AssignOnAwakePatch(_tarkovContext)
+                new Patch.GameWorld.AssignOnAwakePatch(gameObject)
             ];
             _internalTarkyPatchContext.EnablePatches(internalToApply);
             Logger.LogDebug("Internal patches enabled.");
-
-            Logger.LogDebug("Enabling imported patches.");
-            TarkyPatch[] toApply = [];
-            _tarkyPatchContext.EnablePatches(toApply);
-            Logger.LogDebug("Imported patches enabled.");
 
             Logger.LogDebug("TarkyToolkit initialized.");
         }
@@ -63,13 +66,21 @@ public class TarkyToolkit : BaseUnityPlugin
         {
             Logger.LogError("Failed to initialize TarkyToolkit.");
             Logger.LogError(e.ToString());
-            if (_tarkyPatchContext != null)
+
+            if (_internalTarkyPatchContext)
             {
-                GameObject.Destroy(_tarkyPatchContext);
+                Destroy(_internalTarkyPatchContext);
+                _internalTarkyPatchContext = null!;
             }
-            if (_tarkovContext != null)
+            if (_tarkyPatchContext)
             {
-                GameObject.Destroy(_tarkovContext);
+                Destroy(_tarkyPatchContext);
+                _tarkyPatchContext = null!;
+            }
+            if (_tarkovContext)
+            {
+                Destroy(_tarkovContext);
+                _tarkovContext = null!;
             }
         }
     }

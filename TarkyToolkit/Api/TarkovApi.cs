@@ -2,12 +2,12 @@
 
 namespace TarkyToolkit.Api;
 
-public abstract class TarkovApi
+public abstract class TarkovApi : MonoBehaviourSingleton<TarkovApi>
 {
     internal static TarkovContext TarkovContext { get; private set; } = null!;
 
-    internal TarkovApi(TarkovContext tarkovContext)
+    protected TarkovApi()
     {
-        TarkovContext = tarkovContext;
+        TarkovContext = gameObject.GetComponent<TarkovContext>();
     }
 }
