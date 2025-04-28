@@ -2,24 +2,24 @@
 
 namespace TarkyToolkit.Core.Logging;
 
-public class BepLogger(ManualLogSource logger) : ILogger
+public class BepLogger(ManualLogSource logger) : Logger
 {
-    public void LogInfo(string message)
+    public override void LogInfo(string message)
     {
         logger.LogInfo(message);
     }
 
-    public void LogDebug(string message)
+    public override void LogDebug(string message)
     {
         logger.LogDebug(message);
     }
 
-    public void LogWarning(string message)
+    public override void LogWarning(string message)
     {
         logger.LogWarning(message);
     }
 
-    public void LogError(string message)
+    public override void LogError(string message)
     {
         logger.LogError(message);
     }

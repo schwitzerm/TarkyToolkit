@@ -4,7 +4,7 @@
 # Ignore .NET specific shit...
 [Oo]bj/
 [Bb]in/
-[Ll]ib/
+[Ll]ib/**/*.*
 .nuget/
 _ReSharper.*
 packages/

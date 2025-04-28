@@ -1,10 +1,10 @@
 ﻿using TarkyToolkit.Core.Patch;
 using UnityEngine;
-using Logging_ILogger = TarkyToolkit.Core.Logging.ILogger;
+using Logger = TarkyToolkit.Core.Logging.Logger;
 
 namespace TarkyToolkit.Core.Context;
 
-public class TarkyPatchContext(Logging_ILogger logger) : MonoBehaviour, IPatchContext<TarkyPatch>
+public class TarkyPatchContext(Logger logger) : MonoBehaviour, IPatchContext<TarkyPatch>
 {
     private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
     public bool PatchesEnabled { get; private set; }
@@ -49,7 +49,7 @@ public class TarkyPatchContext(Logging_ILogger logger) : MonoBehaviour, IPatchCo
 
     public void DisablePatches(TarkyPatch[] toDisable)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public void DisableAllPatches(bool force = false)
