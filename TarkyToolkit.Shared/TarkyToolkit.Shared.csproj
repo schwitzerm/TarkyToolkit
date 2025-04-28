@@ -12,7 +12,21 @@
         <Authors>Mellow_</Authors>
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
+        <Description>TarkyToolkit.Shared</Description>
+        <Product>TarkyToolkit.Shared</Product>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="BepInEx">
+        <HintPath>..\lib\BepInEx\BepInEx.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>..\lib\TarkovManaged\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+        <HintPath>..\lib\TarkovManaged\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;E:\SPT\BepInEx\plugins\$(TargetFileName)&quot;" />

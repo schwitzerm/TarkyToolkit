@@ -1,5 +1,5 @@
 ﻿using BepInEx.Logging;
-using TarkyToolkit.Shared;
+using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit;
 

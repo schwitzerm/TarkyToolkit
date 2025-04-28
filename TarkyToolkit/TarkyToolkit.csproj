@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <AssemblyName>Mellow_.TarkyToolkit</AssemblyName>
         <Product>TarkyToolkit</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -14,10 +13,13 @@
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit</RootNamespace>
         <Nullable>enable</Nullable>
-        <PackageId>Mellow_.TarkyToolkit</PackageId>
+        <PackageId>TarkyToolkit</PackageId>
         <Title>TarkyToolkit</Title>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit</Description>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <FileVersion>0.1.0</FileVersion>
+        <AssemblyName>Mellow_.TarkyToolkit</AssemblyName>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -26,6 +28,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
       <OutputPath>bin\Release</OutputPath>
+      <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -98,10 +101,6 @@
     <ItemGroup>
       <ProjectReference Include="..\TarkyToolkit.Reflection\TarkyToolkit.Reflection.csproj" />
       <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Reflection\" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

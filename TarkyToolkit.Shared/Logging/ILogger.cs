@@ -1,4 +1,4 @@
-﻿namespace TarkyToolkit.Shared;
+﻿namespace TarkyToolkit.Shared.Logging;
 
 public interface ILogger
 {
