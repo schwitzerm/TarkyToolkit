@@ -9,7 +9,7 @@ namespace TarkyToolkit.Context;
 public class PatchContext : MonoBehaviour, IPatchContext
 {
     private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
-    public bool PatchesApplied { get; private set; } = false;
+    public bool PatchesApplied { get; private set; }
 
     public void EnablePatches(TarkyPatch[] toApply)
     {
@@ -32,6 +32,13 @@ public class PatchContext : MonoBehaviour, IPatchContext
             catch (Exception e)
             {
                 TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patch.GetType().FullName}.");
+                if (patch.FatalOnPatchError)
+                {
+                    TarkyToolkit.Logger.LogError($"Patch {patch.GetType().FullName} is marked as fatal on patch error, disabling TarkyToolkit all patches.");
+                    TarkyToolkit.Logger.LogError(e.ToString());
+                    DisableAllPatches(true);
+                    return;
+                }
                 TarkyToolkit.Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
                 TarkyToolkit.Logger.LogWarning(e.ToString());
             }
@@ -45,9 +52,9 @@ public class PatchContext : MonoBehaviour, IPatchContext
         throw new System.NotImplementedException();
     }
 
-    public void DisableAllPatches()
+    public void DisableAllPatches(bool force = false)
     {
-        if (!PatchesApplied)
+        if (!PatchesApplied && !force)
         {
             TarkyToolkit.Logger.LogWarning("Attempted to disable all patches, but patches have not been applied yet!");
             return;

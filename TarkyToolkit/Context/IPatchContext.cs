@@ -7,5 +7,5 @@ public interface IPatchContext
 {
     void EnablePatches(TarkyPatch[] toApply);
     void DisablePatches(TarkyPatch[] toDisable);
-    void DisableAllPatches();
+    void DisableAllPatches(bool force = false);
 }

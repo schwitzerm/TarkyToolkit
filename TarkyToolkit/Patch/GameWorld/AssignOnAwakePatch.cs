@@ -12,6 +12,8 @@ namespace TarkyToolkit.Patch.GameWorld;
 /// </summary>
 public class AssignOnAwakePatch : TarkyPatch
 {
+    public override bool FatalOnPatchError => true;
+
     public AssignOnAwakePatch(TarkovContext context) : base(context)
     {
     }
