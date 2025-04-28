@@ -1,6 +1,8 @@
 ﻿using System;
 using BepInEx;
 using JetBrains.Annotations;
+using TarkyToolkit.Core;
+using TarkyToolkit.Core.Exceptions;
 using TarkyToolkit.TestPlugin.Patch;
 
 namespace TarkyToolkit.TestPlugin;
@@ -15,16 +17,14 @@ public class TestPlugin : TarkyPlugin
     {
         try
         {
-            var nonFatalPatch = new NonFatalFailingPatch(gameObject);
             TarkyPatchContext.EnablePatches([
-                nonFatalPatch,
-                //fatalPatch
+                new NonFatalFailingPatch(gameObject),
+                new FatalFailingPatch(gameObject)
             ]);
         }
         catch (Exception e)
         {
-            var pluginName = GetType().FullName;
-            Logger.LogError($"Error enabling plugin {pluginName}.");
+            Logger.LogError("Failed to start TestPlugin.");
             Logger.LogError(e.ToString());
             throw;
         }

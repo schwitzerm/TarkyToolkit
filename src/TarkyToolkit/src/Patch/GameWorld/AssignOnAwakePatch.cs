@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Core.Utils;
 using UnityEngine;
+using Logger = TarkyToolkit.Core.Logging.Logger;
 
 namespace TarkyToolkit.Patch.GameWorld;
 
@@ -41,11 +42,11 @@ internal class AssignOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(ro
             }
 
             TarkovContext.GameWorld = __instance;
-            TarkyToolkit.Logger.LogDebug("GameWorld reference assigned.");
+            Logger.LogDebug("GameWorld reference assigned.");
         }
         catch (Exception)
         {
-            TarkyToolkit.Logger.LogError("Failed to assign GameWorld reference.");
+            Logger.LogError("Failed to assign GameWorld reference.");
             throw;
         }
     }

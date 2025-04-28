@@ -1,4 +1,6 @@
 ﻿using BepInEx;
+using JetBrains.Annotations;
+using TarkyToolkit.Core.Logging;
 
 namespace TarkyToolkit.Core;
 
@@ -8,4 +10,11 @@ namespace TarkyToolkit.Core;
 [BepInPlugin("Mellow_.TarkyToolkit.Core", "TarkyToolkit.Core", "0.1.0")]
 public class TarkyToolkitCorePlugin : BaseUnityPlugin
 {
+    internal new static Logger Logger { get; private set; } = null!;
+
+    [UsedImplicitly]
+    private void Awake()
+    {
+        Logger = new BepLogger(base.Logger);
+    }
 }

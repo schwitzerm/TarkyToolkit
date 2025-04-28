@@ -2,7 +2,7 @@
 
 namespace TarkyToolkit.Core.Logging;
 
-public abstract class Logger : Component
+public abstract class Logger
 {
     public abstract void LogInfo(string message);
     public abstract void LogDebug(string message);

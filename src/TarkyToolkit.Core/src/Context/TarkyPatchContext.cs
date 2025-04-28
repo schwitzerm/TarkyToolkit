@@ -1,13 +1,16 @@
-﻿using TarkyToolkit.Core.Patch;
+﻿using TarkyToolkit.Core.Exceptions;
+using TarkyToolkit.Core.Patch;
 using UnityEngine;
 using Logger = TarkyToolkit.Core.Logging.Logger;
 
 namespace TarkyToolkit.Core.Context;
 
-public class TarkyPatchContext(Logger logger) : MonoBehaviour, IPatchContext<TarkyPatch>
+public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
 {
     private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
+
     public bool PatchesEnabled { get; private set; }
+    public Logger Logger => TarkyPlugin.Logger;
 
     public void EnablePatches(TarkyPatch[] toApply)
     {
@@ -21,26 +24,26 @@ public class TarkyPatchContext(Logger logger) : MonoBehaviour, IPatchContext<Tar
             var patchName = patch.GetType().FullName;
             try
             {
-                logger.LogDebug($"Applying patch {patchName}.");
+                Logger.LogDebug($"Applying patch {patchName}.");
 
                 patch.Enable();
                 _appliedPatches.Add(patchName, patch);
 
-                logger.LogDebug($"Successfully applied patch {patchName}.");
+                Logger.LogDebug($"Successfully applied patch {patchName}.");
             }
             catch (Exception e)
             {
-                logger.LogWarning($"Failed to apply patch {patchName}.");
+                Logger.LogWarning($"Failed to apply patch {patchName}.");
                 if (patch.FatalOnPatchError)
                 {
-                    logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
-                    logger.LogError("Disabling all imported TarkyPatch instances.");
-                    logger.LogError(e.ToString());
+                    Logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
+                    Logger.LogError($"Disabling all TarkyPatch instances for {TarkyPlugin.Name}.");
+                    Logger.LogError(e.ToString());
                     DisableAllPatches(true);
-                    return;
+                    throw new TarkyPatchFailedException(true, e);
                 }
-                logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
-                logger.LogWarning(e.ToString());
+                Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                Logger.LogWarning(e.ToString());
             }
         }
 
@@ -56,16 +59,16 @@ public class TarkyPatchContext(Logger logger) : MonoBehaviour, IPatchContext<Tar
     {
         if (!PatchesEnabled && !force)
         {
-            logger.LogWarning("Attempted to disable all patches, but patches have not been applied yet!");
+            Logger.LogWarning("Attempted to disable all patches, but patches have not been applied yet!");
             return;
         }
 
-        logger.LogDebug("Disabling all imported patches.");
+        Logger.LogDebug("Disabling all imported patches.");
         foreach (var patch in _appliedPatches.Values)
         {
             patch.Disable();
         }
         _appliedPatches.Clear();
-        logger.LogDebug("All imported patches disabled.");
+        Logger.LogDebug("All imported patches disabled.");
     }
 }

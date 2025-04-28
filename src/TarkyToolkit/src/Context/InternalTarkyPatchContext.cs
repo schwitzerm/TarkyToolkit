@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using TarkyToolkit.Patch;
 using TarkyToolkit.Core.Context;
 using UnityEngine;
+using Logger = TarkyToolkit.Core.Logging.Logger;
 
 namespace TarkyToolkit.Context;
 
-internal class InternalTarkyPatchContext : Component, IPatchContext<InternalTarkyPatch>
+internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<InternalTarkyPatch>
 {
     private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new();
     public bool PatchesEnabled { get; private set; }
-    public ILogger Logger { get; private set; }
-
-    internal InternalTarkyPatchContext()
-    {
-        Logger = gameObject.GetComponent<ILogger>();
-    }
+    public Logger Logger => TarkyToolkitPlugin.Logger;
 
     public void EnablePatches(InternalTarkyPatch[] toApply)
     {
@@ -29,26 +25,26 @@ internal class InternalTarkyPatchContext : Component, IPatchContext<InternalTark
             var patchName = patch.GetType().FullName;
             try
             {
-                TarkyToolkit.Logger.LogDebug($"Applying internal patch {patchName}.");
+                Logger.LogDebug($"Applying internal patch {patchName}.");
 
                 patch.Enable();
                 _enabledPatches.Add(patchName, patch);
 
-                TarkyToolkit.Logger.LogDebug($"Successfully applied internal patch {patchName}.");
+                Logger.LogDebug($"Successfully applied internal patch {patchName}.");
             }
             catch (Exception e)
             {
-                TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patchName}.");
+                Logger.LogWarning($"Failed to apply patch {patchName}.");
                 if (patch.FatalOnPatchError)
                 {
-                    TarkyToolkit.Logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
-                    TarkyToolkit.Logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
-                    TarkyToolkit.Logger.LogError(e.ToString());
+                    Logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
+                    Logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
+                    Logger.LogError(e.ToString());
                     DisableAllPatches(true);
                     throw;
                 }
-                TarkyToolkit.Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
-                TarkyToolkit.Logger.LogWarning(e.ToString());
+                Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                Logger.LogWarning(e.ToString());
             }
         }
 

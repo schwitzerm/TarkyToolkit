@@ -10,28 +10,27 @@ namespace TarkyToolkit;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 [BepInDependency("com.SPT.core", "3.11.0")]
+[BepInDependency("Mellow_.TarkyToolkit.Api", "0.1.0")]
 [BepInDependency("Mellow_.TarkyToolkit.Core", "0.1.0")]
 [BepInDependency("Mellow_.TarkyToolkit.Reflection", "0.1.0")]
 [BepInProcess("EscapeFromTarkov.exe")]
-public class TarkyToolkit : BaseUnityPlugin
+public class TarkyToolkitPlugin : BaseUnityPlugin
 {
     private static InternalTarkyPatchContext _internalTarkyPatchContext = null!;
     private static TarkyPatchContext _tarkyPatchContext = null!;
     private static TarkovContext _tarkovContext = null!;
-    internal new static Logger Logger = null!;
+    internal new static Logger Logger { get; private set; } = null!;
 
     [UsedImplicitly]
     private void Awake()
     {
         try
         {
-            Logger = gameObject.AddComponent<BepLogger>();
-            Logger.LogDebug("Initializing TarkyToolkit.");
-
+            Logger = new BepLogger(base.Logger);
+            Logger.LogDebug("Initializing TarkyToolkit core modules.");
             _internalTarkyPatchContext = gameObject.AddComponent<InternalTarkyPatchContext>();
             _tarkyPatchContext = gameObject.AddComponent<TarkyPatchContext>();
             _tarkovContext = gameObject.AddComponent<TarkovContext>();
-            DontDestroyOnLoad(Logger);
             DontDestroyOnLoad(_internalTarkyPatchContext);
             DontDestroyOnLoad(_tarkyPatchContext);
             DontDestroyOnLoad(_tarkovContext);
@@ -43,7 +42,7 @@ public class TarkyToolkit : BaseUnityPlugin
             ];
             _internalTarkyPatchContext.EnablePatches(internalToApply);
 
-            Logger.LogDebug("TarkyToolkit initialized.");
+            Logger.LogDebug("TarkyToolkit core modules initialized.");
         }
         catch (Exception e)
         {
