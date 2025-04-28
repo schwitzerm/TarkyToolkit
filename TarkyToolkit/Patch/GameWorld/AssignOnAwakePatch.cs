@@ -46,17 +46,8 @@ internal class AssignOnAwakePatch : InternalTarkyPatch
                 throw new NullReferenceException("TarkovContext reference is null.");
             }
 
-            if (__instance != null)
-            {
-                TarkovContext.GameWorld = __instance;
-                TarkyToolkit.Logger.LogDebug("GameWorld reference assigned.");
-            }
-
-            if (GameWorldApi.Player != null)
-            {
-                var playerName = GameWorldApi.Player.Profile.Nickname;
-                TarkyToolkit.Logger.LogDebug($"Player found! The player's name is: {playerName}.");
-            }
+            TarkovContext.GameWorld = __instance;
+            TarkyToolkit.Logger.LogDebug("GameWorld reference assigned.");
         }
         catch (Exception)
         {
