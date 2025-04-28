@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPT.Reflection.Patching;
+using TarkyToolkit.Patch;
 using UnityEngine;
 
 namespace TarkyToolkit.Context;
 
 public class PatchContext : MonoBehaviour, IPatchContext
 {
-    public readonly Dictionary<string, ModulePatch> _appliedPatches = new();
+    public readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
     public bool PatchesEnabled { get; private set; } = false;
 
-    public void EnablePatches(ModulePatch[] toApply)
+    public void EnablePatches(TarkyPatch[] toApply)
     {
         if (PatchesEnabled)
         {
@@ -39,7 +40,7 @@ public class PatchContext : MonoBehaviour, IPatchContext
         PatchesEnabled = true;
     }
 
-    public void DisablePatches(ModulePatch[] toDisable)
+    public void DisablePatches(TarkyPatch[] toDisable)
     {
         throw new System.NotImplementedException();
     }

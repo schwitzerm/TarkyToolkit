@@ -3,6 +3,7 @@ using BepInEx;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Context;
+using TarkyToolkit.Patch;
 using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit;
@@ -37,7 +38,7 @@ public class TarkyToolkit : BaseUnityPlugin
             Logger.LogDebug("TarkovContext created and marked as DontDestroyOnLoad.");
 
             Logger.LogDebug("Applying patches.");
-            ModulePatch[] toApply =
+            TarkyPatch[] toApply =
             [
                 new Patch.GameWorld.AssignOnAwakePatch(_tarkovContext),
                 new Patch.Player.AssignOnAwakePatch(_tarkovContext)
