@@ -8,14 +8,14 @@ namespace TarkyToolkit.Context;
 
 public class PatchContext : MonoBehaviour, IPatchContext
 {
-    public readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
+    private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
     public bool PatchesEnabled { get; private set; } = false;
 
     public void EnablePatches(TarkyPatch[] toApply)
     {
         if (PatchesEnabled)
         {
-            throw new InvalidOperationException("Hooks already initialized.");
+            throw new InvalidOperationException("Patches already applied.");
         }
 
         foreach (var patch in toApply)
@@ -27,7 +27,7 @@ public class PatchContext : MonoBehaviour, IPatchContext
                 patch.Enable();
                 _appliedPatches.Add(patch.GetType().FullName, patch);
 
-                TarkyToolkit.Logger.LogDebug($"Successfully enabled patch {patch.GetType().FullName}.");
+                TarkyToolkit.Logger.LogDebug($"Successfully applied patch {patch.GetType().FullName}.");
             }
             catch (Exception e)
             {
@@ -52,6 +52,7 @@ public class PatchContext : MonoBehaviour, IPatchContext
         {
             patch.Disable();
         }
+        _appliedPatches.Clear();
         TarkyToolkit.Logger.LogDebug("All patches disabled.");
     }
 }
