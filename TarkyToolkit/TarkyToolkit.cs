@@ -4,7 +4,8 @@ using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Context;
 using TarkyToolkit.Patch;
-using TarkyToolkit.Shared.Logging;
+using UnityEngine;
+using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit;
 
@@ -52,6 +53,14 @@ public class TarkyToolkit : BaseUnityPlugin
         {
             Logger.LogError("Failed to initialize TarkyToolkit.");
             Logger.LogError(e.ToString());
+            if (_patchContext != null)
+            {
+                GameObject.Destroy(_patchContext);
+            }
+            if (_tarkovContext != null)
+            {
+                GameObject.Destroy(_tarkovContext);
+            }
         }
     }
 }
