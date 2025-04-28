@@ -15,13 +15,9 @@ namespace TarkyToolkit.Patch.GameWorld;
 /// <remarks>
 /// Is fatal on error and will disable and destroy ALL TarkyPatch instances should it fail to apply.
 /// </remarks>
-internal class AssignOnAwakePatch : InternalTarkyPatch
+internal class AssignOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError => true;
-
-    public AssignOnAwakePatch(GameObject rootObject) : base(rootObject)
-    {
-    }
+    public override bool FatalOnPatchError { get; set; } = true;
 
     [UsedImplicitly]
     protected override MethodBase GetTargetMethod()

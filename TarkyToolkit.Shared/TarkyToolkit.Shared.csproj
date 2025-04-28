@@ -14,6 +14,7 @@
         <FileVersion>0.1.0</FileVersion>
         <Description>TarkyToolkit.Shared</Description>
         <Product>TarkyToolkit.Shared</Product>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>
 
     <ItemGroup>
@@ -29,7 +30,7 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;E:\SPT\BepInEx\plugins\$(TargetFileName)&quot;" />
+      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
     </Target>
 
 </Project>

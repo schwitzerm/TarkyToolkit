@@ -6,7 +6,7 @@ namespace TarkyToolkit.Patch;
 
 public abstract class TarkyPatch : ModulePatch
 {
-    public abstract bool FatalOnPatchError { get; }
+    public abstract bool FatalOnPatchError { get; set; }
     protected static TarkovContext TarkovContext { get; private set; } = null!;
 
     protected TarkyPatch(GameObject rootObject)

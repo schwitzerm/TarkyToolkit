@@ -8,6 +8,7 @@ namespace TarkyToolkit;
 public abstract class TarkyPlugin : BaseUnityPlugin
 #pragma warning restore BepInEx001
 {
+    public static bool StoppedFatally { get; }
     protected static TarkyPatchContext TarkyPatchContext { get; private set; } = null!;
     protected static TarkovContext TarkovContext { get; private set; } = null!;
     public new static ILogger Logger { get; set; } = null!;

@@ -20,6 +20,7 @@
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
         <AssemblyName>Mellow_.TarkyToolkit</AssemblyName>
+        <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -104,6 +105,6 @@
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;E:\SPT\BepInEx\plugins\$(TargetFileName)&quot;" />
+      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
     </Target>
 </Project>

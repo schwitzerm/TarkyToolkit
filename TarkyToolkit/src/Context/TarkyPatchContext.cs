@@ -34,6 +34,7 @@ public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
                 TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patchName}.");
                 if (patch.FatalOnPatchError)
                 {
+                    patch.FatalOnPatchError = true;
                     TarkyToolkit.Logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
                     TarkyToolkit.Logger.LogError("Disabling all imported TarkyPatch instances.");
                     TarkyToolkit.Logger.LogError(e.ToString());
