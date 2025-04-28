@@ -39,5 +39,6 @@ public class AssignOnAwakePatch : TarkyPatch
         }
 
         TarkovContext.GameWorld = __instance;
+        TarkyToolkit.Logger.LogDebug("Exiting TarkyToolkit.Patch.GameWorld.AssignOnAwakePatch.Postfix().");
     }
 }
