@@ -1,8 +1,16 @@
 # Ignore Idea shit...
 .idea/
 
-# Ignore library, binary, and object files.
-lib/
-bin/
-obj/
-*.DotSettings.user
+# Ignore .NET specific shit...
+[Oo]bj/
+[Bb]in/
+[Ll]ib/
+.nuget/
+_ReSharper.*
+packages/
+artifacts/
+*.user
+*.suo
+*.userprefs
+*DS_Store
+*.sln.ide
