@@ -40,7 +40,7 @@ public class TarkyToolkit : BaseUnityPlugin
             ModulePatch[] toApply =
             [
                 new Patch.GameWorld.AssignOnAwakePatch(_tarkovContext),
-                new Patch.Player.AssignOnAwakePatch()
+                new Patch.Player.AssignOnAwakePatch(_tarkovContext)
             ];
             _patchContext.EnablePatches(toApply);
             Logger.LogDebug("Patches applied.");
