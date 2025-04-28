@@ -1,6 +1,6 @@
-﻿using TarkyToolkit.Patch;
+﻿using TarkyToolkit.Core.Patch;
 
-namespace TarkyToolkit.Context;
+namespace TarkyToolkit.Core.Context;
 
 public interface IPatchContext<T> where T : TarkyPatch
 {

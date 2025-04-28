@@ -1,9 +1,7 @@
 ﻿using System;
 using BepInEx;
-using BepInEx.Logging;
 using JetBrains.Annotations;
-using SPT.Reflection.Patching;
-using TarkyToolkit.Shared.Logging;
+using TarkyToolkit.TestPlugin.Patch;
 
 namespace TarkyToolkit.TestPlugin;
 
@@ -17,8 +15,7 @@ public class TestPlugin : TarkyPlugin
     {
         try
         {
-            var nonFatalPatch = new Patch.Player.NonFatalFailingPatch(gameObject);
-            var fatalPatch = new Patch.Player.FatalFailingPatch(gameObject);
+            var nonFatalPatch = new NonFatalFailingPatch(gameObject);
             TarkyPatchContext.EnablePatches([
                 nonFatalPatch,
                 //fatalPatch
@@ -26,15 +23,10 @@ public class TestPlugin : TarkyPlugin
         }
         catch (Exception e)
         {
-            var patchName = GetType().FullName;
-            Logger.LogError($"Error applying patch {patchName}.");
+            var pluginName = GetType().FullName;
+            Logger.LogError($"Error enabling plugin {pluginName}.");
             Logger.LogError(e.ToString());
             throw;
-        }
-
-        if (enabled)
-        {
-            Logger.LogDebug("TestPlugin enabled.");
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using BepInEx.Logging;
-using TarkyToolkit.Shared.Logging;
 
-namespace TarkyToolkit;
+namespace TarkyToolkit.Core.Logging;
 
 public class BepLogger(ManualLogSource logger) : ILogger
 {

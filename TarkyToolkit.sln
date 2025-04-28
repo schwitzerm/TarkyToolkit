@@ -4,9 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit", "src\TarkyTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Reflection", "src\TarkyToolkit.Reflection\TarkyToolkit.Reflection.csproj", "{20628375-3479-41CC-AAE3-F36676B64E3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Shared", "src\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj", "{EDE50435-AEDA-4B46-A50E-C5C50D09E137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Core", "src\TarkyToolkit.Core\TarkyToolkit.Core.csproj", "{EDE50435-AEDA-4B46-A50E-C5C50D09E137}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.TestPlugin", "src\TarkyToolkit.TestPlugin\TarkyToolkit.TestPlugin.csproj", "{67BBC120-CEB5-46E4-8E67-DDDC15431339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Api", "src\TarkyToolkit.Api\TarkyToolkit.Api.csproj", "{F356E1AE-B5C4-4D2A-A76E-EDC9533E803A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,9 @@ Global
 		{67BBC120-CEB5-46E4-8E67-DDDC15431339}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67BBC120-CEB5-46E4-8E67-DDDC15431339}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67BBC120-CEB5-46E4-8E67-DDDC15431339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F356E1AE-B5C4-4D2A-A76E-EDC9533E803A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F356E1AE-B5C4-4D2A-A76E-EDC9533E803A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F356E1AE-B5C4-4D2A-A76E-EDC9533E803A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F356E1AE-B5C4-4D2A-A76E-EDC9533E803A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

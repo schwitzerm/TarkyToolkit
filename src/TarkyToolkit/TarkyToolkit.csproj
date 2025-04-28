@@ -21,6 +21,7 @@
         <FileVersion>0.1.0</FileVersion>
         <AssemblyName>Mellow_.TarkyToolkit</AssemblyName>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -100,8 +101,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TarkyToolkit.Api\TarkyToolkit.Api.csproj" />
       <ProjectReference Include="..\TarkyToolkit.Reflection\TarkyToolkit.Reflection.csproj" />
-      <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
+      <ProjectReference Include="..\TarkyToolkit.Core\TarkyToolkit.Core.csproj" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

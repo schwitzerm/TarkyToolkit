@@ -1,8 +1,8 @@
 ﻿using SPT.Reflection.Patching;
-using TarkyToolkit.Context;
+using TarkyToolkit.Core.Context;
 using UnityEngine;
 
-namespace TarkyToolkit.Patch;
+namespace TarkyToolkit.Core.Patch;
 
 public abstract class TarkyPatch : ModulePatch
 {

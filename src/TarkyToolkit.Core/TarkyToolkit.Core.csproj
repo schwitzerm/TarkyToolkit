@@ -15,11 +15,18 @@
         <Description>TarkyToolkit.Shared</Description>
         <Product>TarkyToolkit.Shared</Product>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>..\..\lib\TarkovManaged\Assembly-CSharp.dll</HintPath>
+      </Reference>
       <Reference Include="BepInEx">
         <HintPath>..\..\lib\BepInEx\BepInEx.dll</HintPath>
+      </Reference>
+      <Reference Include="spt-reflection">
+        <HintPath>..\..\lib\SPT\spt-reflection.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\..\lib\TarkovManaged\UnityEngine.dll</HintPath>
@@ -27,6 +34,10 @@
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\..\lib\TarkovManaged\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="src\Attributes\" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

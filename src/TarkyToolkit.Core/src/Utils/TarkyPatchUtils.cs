@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-namespace TarkyToolkit.Shared.Utils;
+namespace TarkyToolkit.Core.Utils;
 
 public class TarkyPatchUtils
 {

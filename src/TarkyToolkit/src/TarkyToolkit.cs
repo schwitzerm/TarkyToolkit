@@ -3,15 +3,16 @@ using BepInEx;
 using JetBrains.Annotations;
 using TarkyToolkit.Context;
 using TarkyToolkit.Patch;
-using UnityEngine;
-using ILogger = TarkyToolkit.Shared.Logging.ILogger;
+using TarkyToolkit.Core.Context;
+using TarkyToolkit.Core.Logging;
+using ILogger = TarkyToolkit.Core.Logging.ILogger;
 
 namespace TarkyToolkit;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 [BepInDependency("com.SPT.core", "3.11.0")]
 [BepInDependency("Mellow_.TarkyToolkit.Reflection", "0.1.0")]
-[BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
+[BepInDependency("Mellow_.TarkyToolkit.Core", "0.1.0")]
 [BepInProcess("EscapeFromTarkov.exe")]
 public class TarkyToolkit : BaseUnityPlugin
 {

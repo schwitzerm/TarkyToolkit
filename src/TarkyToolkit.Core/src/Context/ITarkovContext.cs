@@ -1,4 +1,4 @@
-﻿namespace TarkyToolkit.Context;
+﻿namespace TarkyToolkit.Core.Context;
 
 public interface ITarkovContext
 {

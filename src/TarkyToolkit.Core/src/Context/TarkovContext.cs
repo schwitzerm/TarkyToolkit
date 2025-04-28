@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TarkyToolkit.Context;
+namespace TarkyToolkit.Core.Context;
 
 public class TarkovContext : MonoBehaviour, ITarkovContext
 {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using TarkyToolkit.Patch;
+using TarkyToolkit.Core.Context;
 using UnityEngine;
+using ILogger = TarkyToolkit.Core.Logging.ILogger;
 
 namespace TarkyToolkit.Context;
 
-internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<InternalTarkyPatch>
+internal class InternalTarkyPatchContext(ILogger logger) : MonoBehaviour, IPatchContext<InternalTarkyPatch>
 {
     private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new();
     public bool PatchesEnabled { get; private set; }
@@ -22,26 +24,26 @@ internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<Internal
             var patchName = patch.GetType().FullName;
             try
             {
-                TarkyToolkit.Logger.LogDebug($"Applying internal patch {patchName}.");
+                logger.LogDebug($"Applying internal patch {patchName}.");
 
                 patch.Enable();
                 _enabledPatches.Add(patchName, patch);
 
-                TarkyToolkit.Logger.LogDebug($"Successfully applied internal patch {patchName}.");
+                logger.LogDebug($"Successfully applied internal patch {patchName}.");
             }
             catch (Exception e)
             {
-                TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patchName}.");
+                logger.LogWarning($"Failed to apply patch {patchName}.");
                 if (patch.FatalOnPatchError)
                 {
-                    TarkyToolkit.Logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
-                    TarkyToolkit.Logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
-                    TarkyToolkit.Logger.LogError(e.ToString());
+                    logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
+                    logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
+                    logger.LogError(e.ToString());
                     DisableAllPatches(true);
                     throw;
                 }
-                TarkyToolkit.Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
-                TarkyToolkit.Logger.LogWarning(e.ToString());
+                logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                logger.LogWarning(e.ToString());
             }
         }
 

@@ -21,6 +21,7 @@
         <FileVersion>0.1.0</FileVersion>
         <Title>TarkyToolkit.TestPlugin</Title>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">

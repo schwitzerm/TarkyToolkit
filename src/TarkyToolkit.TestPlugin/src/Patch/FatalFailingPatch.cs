@@ -2,14 +2,14 @@
 using System.Reflection;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
-using TarkyToolkit.Patch;
+using TarkyToolkit.Core.Patch;
 using UnityEngine;
 
-namespace TarkyToolkit.TestPlugin.Patch.Player;
+namespace TarkyToolkit.TestPlugin.Patch;
 
-public class NonFatalFailingPatch(GameObject rootObject) : TarkyPatch(rootObject)
+public class FatalFailingPatch(GameObject rootObject) : TarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError { get; set; } = false;
+    public override bool FatalOnPatchError { get; set; } = true;
 
     protected override MethodBase GetTargetMethod()
     {

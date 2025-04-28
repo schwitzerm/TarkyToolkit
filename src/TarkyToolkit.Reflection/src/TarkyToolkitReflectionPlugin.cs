@@ -6,6 +6,6 @@ namespace TarkyToolkit.Reflection;
 /// Stub to load binary. Needed to load and require this binary as a dependency in BepInEx.
 /// </summary>
 [BepInPlugin("Mellow_.TarkyToolkit.Reflection", "TarkyToolkit.Reflection", "0.1.0")]
-public class TarkyToolkitReflection : BaseUnityPlugin
+public class TarkyToolkitReflectionPlugin : BaseUnityPlugin
 {
 }
