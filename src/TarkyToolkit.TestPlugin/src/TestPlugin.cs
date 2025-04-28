@@ -21,7 +21,7 @@ public class TestPlugin : TarkyPlugin
             var fatalPatch = new Patch.Player.FatalFailingPatch(gameObject);
             TarkyPatchContext.EnablePatches([
                 nonFatalPatch,
-                fatalPatch
+                //fatalPatch
             ]);
         }
         catch (Exception e)
