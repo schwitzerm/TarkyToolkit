@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPT.Reflection.Patching;
 using TarkyToolkit.Patch;
 using UnityEngine;
 
 namespace TarkyToolkit.Context;
 
-public class PatchContext : MonoBehaviour, IPatchContext
+public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
 {
     private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
     public bool PatchesApplied { get; private set; }
@@ -20,21 +19,23 @@ public class PatchContext : MonoBehaviour, IPatchContext
 
         foreach (var patch in toApply)
         {
+            var patchName = patch.GetType().FullName;
             try
             {
-                TarkyToolkit.Logger.LogDebug($"Applying patch {patch.GetType().FullName}.");
+                TarkyToolkit.Logger.LogDebug($"Applying patch {patchName}.");
 
                 patch.Enable();
-                _appliedPatches.Add(patch.GetType().FullName, patch);
+                _appliedPatches.Add(patchName, patch);
 
-                TarkyToolkit.Logger.LogDebug($"Successfully applied patch {patch.GetType().FullName}.");
+                TarkyToolkit.Logger.LogDebug($"Successfully applied patch {patchName}.");
             }
             catch (Exception e)
             {
-                TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patch.GetType().FullName}.");
+                TarkyToolkit.Logger.LogWarning($"Failed to apply patch {patchName}.");
                 if (patch.FatalOnPatchError)
                 {
-                    TarkyToolkit.Logger.LogError($"Patch {patch.GetType().FullName} is marked as fatal on patch error, disabling TarkyToolkit all patches.");
+                    TarkyToolkit.Logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
+                    TarkyToolkit.Logger.LogError("Disabling all imported TarkyPatch instances.");
                     TarkyToolkit.Logger.LogError(e.ToString());
                     DisableAllPatches(true);
                     return;
@@ -60,12 +61,12 @@ public class PatchContext : MonoBehaviour, IPatchContext
             return;
         }
 
-        TarkyToolkit.Logger.LogDebug("Disabling all patches.");
+        TarkyToolkit.Logger.LogDebug("Disabling all imported patches.");
         foreach (var patch in _appliedPatches.Values)
         {
             patch.Disable();
         }
         _appliedPatches.Clear();
-        TarkyToolkit.Logger.LogDebug("All patches disabled.");
+        TarkyToolkit.Logger.LogDebug("All imported patches disabled.");
     }
 }

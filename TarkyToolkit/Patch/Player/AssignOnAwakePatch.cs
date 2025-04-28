@@ -7,8 +7,10 @@ using TarkyToolkit.Shared.Utils;
 namespace TarkyToolkit.Patch.Player;
 /// <remarks>
 /// Will fail to patch for now as an Awake() method does not exist on EFT.Player.
+/// Normally we'd just fetch the player through the GameWorld API, but this is designed to fail for testing. :)
+/// Although, I guess we can replace it with a patch designed specifically for that purpose...
 /// </remarks>
-public class AssignOnAwakePatch : TarkyPatch
+internal class AssignOnAwakePatch : InternalTarkyPatch
 {
     public override bool FatalOnPatchError => false;
 

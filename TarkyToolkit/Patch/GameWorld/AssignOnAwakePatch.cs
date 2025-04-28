@@ -10,7 +10,10 @@ namespace TarkyToolkit.Patch.GameWorld;
 /// <summary>
 /// When Unity awakes the EFT GameWorld object, we assign it to our TarkovContext's GameWorld.
 /// </summary>
-public class AssignOnAwakePatch : TarkyPatch
+/// <remarks>
+/// Is fatal on error and will disable and destroy ALL TarkyPatch instances should it fail to apply.
+/// </remarks>
+internal class AssignOnAwakePatch : InternalTarkyPatch
 {
     public override bool FatalOnPatchError => true;
 

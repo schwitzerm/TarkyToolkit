@@ -1,5 +1,16 @@
-﻿namespace TarkyToolkit.Api;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TarkyToolkit.Context;
 
-public class GameWorldApi
+namespace TarkyToolkit.Api;
+
+public class GameWorldApi : TarkovApi
 {
+    public GameWorldApi(TarkovContext tarkovContext) : base(tarkovContext)
+    {
+    }
+
+    public static List<EFT.Player> AllAlivePlayers => TarkovContext.GameWorld?.AllAlivePlayersList ?? [];
+    public static List<EFT.Player> AllPlayersToEverExist => TarkovContext.GameWorld?.AllPlayersEverExisted?.ToList() ?? [];
+    public static EFT.Player? Player => TarkovContext.GameWorld?.MainPlayer;
 }

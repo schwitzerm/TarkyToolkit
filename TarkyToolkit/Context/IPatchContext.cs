@@ -1,11 +1,10 @@
-﻿using SPT.Reflection.Patching;
-using TarkyToolkit.Patch;
+﻿using TarkyToolkit.Patch;
 
 namespace TarkyToolkit.Context;
 
-public interface IPatchContext
+public interface IPatchContext<T> where T : TarkyPatch
 {
-    void EnablePatches(TarkyPatch[] toApply);
-    void DisablePatches(TarkyPatch[] toDisable);
+    void EnablePatches(T[] toApply);
+    void DisablePatches(T[] toDisable);
     void DisableAllPatches(bool force = false);
 }
