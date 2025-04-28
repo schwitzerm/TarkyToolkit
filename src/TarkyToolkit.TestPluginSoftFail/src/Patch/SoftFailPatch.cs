@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TarkyToolkit.TestPlugin.Patch;
 
-public class NonFatalFailingPatch(GameObject rootObject) : TarkyPatch(rootObject)
+public class SoftFailPatch(GameObject rootObject) : TarkyPatch(rootObject)
 {
     public override bool FatalOnPatchError { get; set; } = false;
 
