@@ -18,7 +18,7 @@ internal class DerefOnDestroyPatch(GameObject rootObject) : InternalTarkyPatch(r
     [UsedImplicitly]
     private static void Postfix()
     {
-        Logger.LogDebug("GameWorld destroyed by EFT Client. Dereferencing in TarkyToolkit.");
+        Logger.LogDebug("GameWorld destroyed by EFT Client. Dereferencing in TarkovContext.");
         TarkovContext.GameWorld = null;
     }
 }
