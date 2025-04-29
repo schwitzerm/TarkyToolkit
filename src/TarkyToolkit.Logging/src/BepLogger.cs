@@ -48,9 +48,6 @@ namespace TarkyToolkit.Logging
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of thread-safe BepLogger
-        /// </summary>
         /// <param name="logger">The BepInEx ManualLogSource to wrap</param>
         public BepLogger(ManualLogSource logger)
         {
@@ -63,7 +60,6 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Sets up message processing using the specified MonoBehaviour
         /// </summary>
-        /// <param name="host">A MonoBehaviour that will host the logging coroutine</param>
         public void SetupProcessing(MonoBehaviour host)
         {
             if (_isDisposed) throw new ObjectDisposedException(nameof(BepLogger));
@@ -251,7 +247,7 @@ namespace TarkyToolkit.Logging
                 }
                 catch
                 {
-                    // We've done everything we can
+                    // We've done all we can
                 }
             }
         }
@@ -337,6 +333,9 @@ namespace TarkyToolkit.Logging
             }
         }
 
+        /// <summary>
+        /// Processes the log queue
+        /// </summary>
         private IEnumerator ProcessLogQueue()
         {
             while (_processingStarted && !_isDisposed)
@@ -347,6 +346,9 @@ namespace TarkyToolkit.Logging
             }
         }
 
+        /// <summary>
+        /// Processes all logs in batches with error handling
+        /// </summary>
         private void ProcessLogsWithErrorHandling()
         {
             try
@@ -376,7 +378,7 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Processes a single log message based on its level
+        /// Processes a single log message
         /// </summary>
         private void ProcessLogMessage(LogMessage message)
         {
