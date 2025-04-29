@@ -1,47 +1,49 @@
-﻿// ReSharper disable MergeConditionalExpression
-namespace TarkyToolkit.Core.Api;
+﻿using System.Collections.Generic;
 
-public class GameWorldApi : TarkovApi
+namespace TarkyToolkit.Core.Api
 {
-    public List<EFT.Player> GetAllAlivePlayers
+    public class GameWorldApi : TarkovApi
     {
-        get
+        public List<EFT.Player>? GetAllAlivePlayers
         {
-            if (TarkovContext.GameWorld is not null &&
-                TarkovContext.GameWorld.AllAlivePlayersList is not null)
+            get
             {
-                return TarkovContext.GameWorld.AllAlivePlayersList;
-            }
+                if (TarkovContext.GameWorld is not null &&
+                    TarkovContext.GameWorld.AllAlivePlayersList is not null)
+                {
+                    return TarkovContext.GameWorld.AllAlivePlayersList;
+                }
 
-            return [];
+                return null;
+            }
         }
-    }
 
-    public IEnumerable<EFT.Player> GetAllPlayersToEverExist
-    {
-        get
+        public IEnumerable<EFT.Player>? GetAllPlayersToEverExist
         {
-            if (TarkovContext.GameWorld is not null &&
-                TarkovContext.GameWorld.AllPlayersEverExisted is not null)
+            get
             {
-                return TarkovContext.GameWorld.AllPlayersEverExisted;
-            }
+                if (TarkovContext.GameWorld is not null &&
+                    TarkovContext.GameWorld.AllPlayersEverExisted is not null)
+                {
+                    return TarkovContext.GameWorld.AllPlayersEverExisted;
+                }
 
-            return [];
+                return null;
+            }
         }
-    }
 
-    public EFT.Player Player
-    {
-        get
+        public EFT.Player? Player
         {
-            if (TarkovContext.GameWorld is not null &&
-                TarkovContext.GameWorld.MainPlayer is not null)
+            get
             {
-                return TarkovContext.GameWorld.MainPlayer;
-            }
+                if (TarkovContext.GameWorld is not null &&
+                    TarkovContext.GameWorld.MainPlayer is not null)
+                {
+                    return TarkovContext.GameWorld.MainPlayer;
+                }
 
-            return null;
+                return null;
+            }
         }
     }
 }

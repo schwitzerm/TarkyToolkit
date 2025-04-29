@@ -5,59 +5,60 @@ using TarkyToolkit.Patch;
 using UnityEngine;
 using Logger = TarkyToolkit.Core.Logging.Logger;
 
-namespace TarkyToolkit.Context;
-
-internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<InternalTarkyPatch>
+namespace TarkyToolkit.Context
 {
-    private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new();
-    public bool PatchesEnabled { get; private set; }
-    public Logger Logger => TarkyToolkitPlugin.Logger;
-
-    public void EnablePatches(InternalTarkyPatch[] toApply)
+    internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<InternalTarkyPatch>
     {
-        if (PatchesEnabled)
-        {
-            throw new InvalidOperationException("Internal patches are already applied.");
-        }
+        private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new();
+        public bool PatchesEnabled { get; private set; }
+        public Logger Logger => TarkyToolkitPlugin.Logger;
 
-        foreach (var patch in toApply)
+        public void EnablePatches(InternalTarkyPatch[] toApply)
         {
-            var patchName = patch.GetType().FullName;
-            try
+            if (PatchesEnabled)
             {
-                Logger.LogDebug($"Applying internal patch {patchName}.");
-
-                patch.Enable();
-                _enabledPatches.Add(patchName, patch);
-
-                Logger.LogDebug($"Successfully applied internal patch {patchName}.");
+                throw new InvalidOperationException("Internal patches are already applied.");
             }
-            catch (Exception e)
+
+            foreach (var patch in toApply)
             {
-                Logger.LogWarning($"Failed to apply patch {patchName}.");
-                if (patch.FatalOnPatchError)
+                var patchName = patch.GetType().FullName;
+                try
                 {
-                    Logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
-                    Logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
-                    Logger.LogError(e.ToString());
-                    DisableAllPatches(true);
-                    throw;
+                    Logger.LogDebug($"Applying internal patch {patchName}.");
+
+                    patch.Enable();
+                    _enabledPatches.Add(patchName, patch);
+
+                    Logger.LogDebug($"Successfully applied internal patch {patchName}.");
                 }
-                Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
-                Logger.LogWarning(e.ToString());
+                catch (Exception e)
+                {
+                    Logger.LogWarning($"Failed to apply patch {patchName}.");
+                    if (patch.FatalOnPatchError)
+                    {
+                        Logger.LogError($"Patch {patchName} is internal and marked as FatalOnPatchError.");
+                        Logger.LogError("Destroying all TarkyPatch instances and disabling TarkyToolkit.");
+                        Logger.LogError(e.ToString());
+                        DisableAllPatches(true);
+                        throw;
+                    }
+                    Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                    Logger.LogWarning(e.ToString());
+                }
             }
+
+            PatchesEnabled = true;
         }
 
-        PatchesEnabled = true;
-    }
+        public void DisablePatches(InternalTarkyPatch[] toDisable)
+        {
+            throw new NotImplementedException();
+        }
 
-    public void DisablePatches(InternalTarkyPatch[] toDisable)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void DisableAllPatches(bool force = false)
-    {
-        throw new System.NotImplementedException();
+        public void DisableAllPatches(bool force = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

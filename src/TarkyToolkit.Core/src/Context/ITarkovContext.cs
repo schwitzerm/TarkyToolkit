@@ -1,9 +1,12 @@
-﻿using TarkyToolkit.Core.Logging;
+﻿using TarkyToolkit.Core.Api;
+using TarkyToolkit.Core.Logging;
 
-namespace TarkyToolkit.Core.Context;
-
-public interface ITarkovContext
+namespace TarkyToolkit.Core.Context
 {
-    abstract Logger Logger { get; }
-    EFT.GameWorld GameWorld { get; set; }
+    public interface ITarkovContext
+    {
+        abstract Logger Logger { get; }
+        GameWorldApi GameWorldApi { get; }
+        EFT.GameWorld? GameWorld { get; set; }
+    }
 }

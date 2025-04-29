@@ -1,6 +1,6 @@
 # TarkyToolkit
 A no nonsense SPT Client plugin SDK.
-.NET 4.7.1, C# 14.0
+.NET 4.7.1, C# 9.0
 
 Set the environment variable `SPTCLIENTPLUGINSPATH` to... well where the SPT Client plugins go. This is usually `<YourSPTInstall>/BepInEx/plugins`.
 

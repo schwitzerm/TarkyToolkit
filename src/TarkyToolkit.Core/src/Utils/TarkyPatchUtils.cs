@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-namespace TarkyToolkit.Core.Utils;
-
-public class TarkyPatchUtils
+namespace TarkyToolkit.Core.Utils
 {
-    public static MethodBase GetAwakeMethod<T>() where T : MonoBehaviour
+    public class TarkyPatchUtils
     {
-        return typeof(T).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public);
+        public static MethodBase? GetAwakeMethod<T>() where T : MonoBehaviour
+        {
+            return typeof(T).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public);
+        }
     }
 }

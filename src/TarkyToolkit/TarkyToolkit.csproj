@@ -5,15 +5,15 @@
         <Product>TarkyToolkit</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>default</LangVersion>
+        <LangVersion>9</LangVersion>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit</RootNamespace>
-        <Nullable>disable</Nullable>
-        <PackageId>TarkyToolkit</PackageId>
+        <Nullable>enable</Nullable>
+        <PackageId>Mellow_.TarkyToolkit</PackageId>
         <Title>TarkyToolkit</Title>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit</Description>
@@ -32,12 +32,6 @@
       <OutputPath>bin\Release</OutputPath>
       <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
-        <PackageReference Include="BepInEx.Core" Version="5.*"/>
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*"/>
-    </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>

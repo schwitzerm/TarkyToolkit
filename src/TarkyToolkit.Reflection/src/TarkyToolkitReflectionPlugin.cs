@@ -2,19 +2,20 @@
 using JetBrains.Annotations;
 using TarkyToolkit.Core.Logging;
 
-namespace TarkyToolkit.Reflection;
-
-/// <summary>
-/// Stub to load binary. Needed to load and require this binary as a dependency in BepInEx.
-/// </summary>
-[BepInPlugin("Mellow_.TarkyToolkit.Reflection", "TarkyToolkit.Reflection", "0.1.0")]
-public class TarkyToolkitReflectionPlugin : BaseUnityPlugin
+namespace TarkyToolkit.Reflection
 {
-    internal new static Logger Logger { get; private set; } = null!;
-
-    [UsedImplicitly]
-    private void Awake()
+    /// <summary>
+    /// Stub to load binary. Needed to load and require this binary as a dependency in BepInEx.
+    /// </summary>
+    [BepInPlugin("Mellow_.TarkyToolkit.Reflection", "TarkyToolkit.Reflection", "0.1.0")]
+    public class TarkyToolkitReflectionPlugin : BaseUnityPlugin
     {
-        Logger = new BepLogger(base.Logger);
+        internal new static Logger Logger { get; private set; } = null!;
+
+        [UsedImplicitly]
+        private void Awake()
+        {
+            Logger = new BepLogger(base.Logger);
+        }
     }
 }

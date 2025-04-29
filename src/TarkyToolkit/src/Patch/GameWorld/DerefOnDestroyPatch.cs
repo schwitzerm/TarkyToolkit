@@ -3,22 +3,27 @@ using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using UnityEngine;
 
-namespace TarkyToolkit.Patch.GameWorld;
-
-internal class DerefOnDestroyPatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
+namespace TarkyToolkit.Patch.GameWorld
 {
-    public override bool FatalOnPatchError => true;
-
-    protected override MethodBase GetTargetMethod()
+    internal class DerefOnDestroyPatch : InternalTarkyPatch
     {
-        return typeof(EFT.GameWorld).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.Public)!;
-    }
+        public DerefOnDestroyPatch(GameObject rootObject) : base(rootObject)
+        {
+        }
 
-    [PatchPostfix]
-    [UsedImplicitly]
-    private static void Postfix()
-    {
-        Logger.LogDebug("GameWorld destroyed by EFT Client. Dereferencing in TarkovContext.");
-        TarkovContext.GameWorld = null;
+        public override bool FatalOnPatchError => true;
+
+        protected override MethodBase GetTargetMethod()
+        {
+            return typeof(EFT.GameWorld).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.Public)!;
+        }
+
+        [PatchPostfix]
+        [UsedImplicitly]
+        private static void Postfix()
+        {
+            Logger.LogDebug("GameWorld destroyed by EFT Client. Dereferencing in TarkovContext.");
+            TarkovContext.GameWorld = null;
+        }
     }
 }

@@ -6,22 +6,27 @@ using TarkyToolkit.Core.Patch;
 using TarkyToolkit.Core.Utils;
 using UnityEngine;
 
-namespace TarkyToolkit.TestSoftFailPlugin.Patch;
-
-public class SoftFailPatch(GameObject rootObject) : TarkyPatch(rootObject)
+namespace TarkyToolkit.TestSoftFailPlugin.Patch
 {
-    public override bool FatalOnPatchError => false;
-
-    protected override MethodBase GetTargetMethod()
+    public class SoftFailPatch : TarkyPatch
     {
-        // not possible, will fail.
-        return TarkyPatchUtils.GetAwakeMethod<EFT.Player>()!;
-    }
+        public SoftFailPatch(GameObject rootObject) : base(rootObject)
+        {
+        }
 
-    [PatchPostfix]
-    [UsedImplicitly]
-    private static void Postfix()
-    {
-        throw new NotImplementedException();
+        public override bool FatalOnPatchError => false;
+
+        protected override MethodBase GetTargetMethod()
+        {
+            // not possible, will fail.
+            return TarkyPatchUtils.GetAwakeMethod<EFT.Player>()!;
+        }
+
+        [PatchPostfix]
+        [UsedImplicitly]
+        private static void Postfix()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

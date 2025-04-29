@@ -1,8 +1,17 @@
-﻿namespace TarkyToolkit.Core.Exceptions;
+﻿using System;
 
-public class TarkyPatchFailedException(bool isFatal, Exception innerException) : Exception
+namespace TarkyToolkit.Core.Exceptions
 {
-    public bool IsFatal { get; } = isFatal;
+    public class TarkyPatchFailedException : Exception
+    {
+        public TarkyPatchFailedException(bool isFatal, Exception innerException)
+        {
+            IsFatal = isFatal;
+            InnerException = innerException;
+        }
 
-    public new Exception InnerException { get; } = innerException;
+        public bool IsFatal { get; }
+
+        public new Exception InnerException { get; }
+    }
 }

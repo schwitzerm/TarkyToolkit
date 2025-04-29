@@ -6,14 +6,14 @@
         <Product>TarkyToolkit.TestSoftFailPlugin</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>9</LangVersion>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit.TestSoftFailPlugin</RootNamespace>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit.TestSoftFailPlugin</Description>
         <Company>Mellow_</Company>

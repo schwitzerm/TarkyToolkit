@@ -6,13 +6,13 @@
         <Product>TarkyToolkit.Reflection</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>default</LangVersion>
+        <LangVersion>9</LangVersion>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
-        <Nullable>disable</Nullable>
+        <Nullable>enable</Nullable>
         <PackageId>Mellow_.TarkyToolkit.Reflection</PackageId>
         <Title>TarkyToolkit.Reflection</Title>
         <Authors>Mellow_</Authors>

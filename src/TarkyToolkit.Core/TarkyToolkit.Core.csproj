@@ -2,21 +2,40 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>disable</Nullable>
-        <LangVersion>latestmajor</LangVersion>
-        <AssemblyName>Mellow_.TarkyToolkit.Shared</AssemblyName>
-        <PackageId>Mellow_.TarkyToolkit.Shared</PackageId>
+        <Product>TarkyToolkit.Core</Product>
         <Version>0.1.0</Version>
-        <Title>TarkyToolkit.Shared</Title>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>9</LangVersion>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <RootNamespace>TarkyToolkit.Core</RootNamespace>
+        <Nullable>enable</Nullable>
+        <PackageId>Mellow_.TarkyToolkit.Core</PackageId>
+        <Title>TarkyToolkit.Core</Title>
         <Authors>Mellow_</Authors>
+        <Description>TarkyToolkit.Core</Description>
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
-        <Description>TarkyToolkit.Shared</Description>
-        <Product>TarkyToolkit.Shared</Product>
+        <AssemblyName>Mellow_.TarkyToolkit.Core</AssemblyName>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <OutputPath>bin\Debug</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <OutputPath>bin\Release</OutputPath>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+    </ItemGroup>
 
     <ItemGroup>
       <Reference Include="Assembly-CSharp">

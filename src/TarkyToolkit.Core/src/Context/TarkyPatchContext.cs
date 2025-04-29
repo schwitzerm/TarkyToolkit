@@ -1,74 +1,77 @@
-﻿using TarkyToolkit.Core.Exceptions;
+﻿using System;
+using System.Collections.Generic;
+using TarkyToolkit.Core.Exceptions;
 using TarkyToolkit.Core.Patch;
 using UnityEngine;
 using Logger = TarkyToolkit.Core.Logging.Logger;
 
-namespace TarkyToolkit.Core.Context;
-
-public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
+namespace TarkyToolkit.Core.Context
 {
-    private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
-
-    public bool PatchesEnabled { get; private set; }
-    public Logger Logger => TarkyPlugin.Logger;
-
-    public void EnablePatches(TarkyPatch[] toApply)
+    public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
     {
-        if (PatchesEnabled)
-        {
-            throw new InvalidOperationException("Patches already applied.");
-        }
+        private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
 
-        foreach (var patch in toApply)
+        public bool PatchesEnabled { get; private set; }
+        public Logger Logger => TarkyPlugin.Logger;
+
+        public void EnablePatches(TarkyPatch[] toApply)
         {
-            var patchName = patch.GetType().FullName;
-            try
+            if (PatchesEnabled)
             {
-                Logger.LogDebug($"Applying patch {patchName}.");
-
-                patch.Enable();
-                _appliedPatches.Add(patchName, patch);
-
-                Logger.LogDebug($"Successfully applied patch {patchName}.");
+                throw new InvalidOperationException("Patches already applied.");
             }
-            catch (Exception e)
+
+            foreach (var patch in toApply)
             {
-                Logger.LogWarning($"Failed to apply patch {patchName}.");
-                if (patch.FatalOnPatchError)
+                var patchName = patch.GetType().FullName;
+                try
                 {
-                    Logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
-                    Logger.LogError($"Disabling all TarkyPatch instances for {TarkyPlugin.Name}.");
-                    Logger.LogError(e.ToString());
-                    DisableAllPatches(true);
-                    throw new TarkyPatchFailedException(true, e);
+                    Logger.LogDebug($"Applying patch {patchName}.");
+
+                    patch.Enable();
+                    _appliedPatches.Add(patchName, patch);
+
+                    Logger.LogDebug($"Successfully applied patch {patchName}.");
                 }
-                Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
-                Logger.LogWarning(e.ToString());
+                catch (Exception e)
+                {
+                    Logger.LogWarning($"Failed to apply patch {patchName}.");
+                    if (patch.FatalOnPatchError)
+                    {
+                        Logger.LogError($"Patch {patchName} is marked as fatal on patch error.");
+                        Logger.LogError($"Disabling all TarkyPatch instances for {TarkyPlugin.Name}.");
+                        Logger.LogError(e.ToString());
+                        DisableAllPatches(true);
+                        throw new TarkyPatchFailedException(true, e);
+                    }
+                    Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                    Logger.LogWarning(e.ToString());
+                }
             }
+
+            PatchesEnabled = true;
         }
 
-        PatchesEnabled = true;
-    }
-
-    public void DisablePatches(TarkyPatch[] toDisable)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void DisableAllPatches(bool force = false)
-    {
-        if (!PatchesEnabled && !force)
+        public void DisablePatches(TarkyPatch[] toDisable)
         {
-            Logger.LogWarning("Attempted to disable all patches, but patches have not been applied yet!");
-            return;
+            throw new NotImplementedException();
         }
 
-        Logger.LogDebug("Disabling all imported patches.");
-        foreach (var patch in _appliedPatches.Values)
+        public void DisableAllPatches(bool force = false)
         {
-            patch.Disable();
+            if (!PatchesEnabled && !force)
+            {
+                Logger.LogWarning("Attempted to disable all patches, but patches have not been applied yet!");
+                return;
+            }
+
+            Logger.LogDebug("Disabling all imported patches.");
+            foreach (var patch in _appliedPatches.Values)
+            {
+                patch.Disable();
+            }
+            _appliedPatches.Clear();
+            Logger.LogDebug("All imported patches disabled.");
         }
-        _appliedPatches.Clear();
-        Logger.LogDebug("All imported patches disabled.");
     }
 }

@@ -1,26 +1,34 @@
 ﻿using BepInEx.Logging;
 
-namespace TarkyToolkit.Core.Logging;
-
-public class BepLogger(ManualLogSource logger) : Logger
+namespace TarkyToolkit.Core.Logging
 {
-    public override void LogInfo(string message)
+    public class BepLogger : Logger
     {
-        logger.LogInfo(message);
-    }
+        private readonly ManualLogSource _logger;
 
-    public override void LogDebug(string message)
-    {
-        logger.LogDebug(message);
-    }
+        public BepLogger(ManualLogSource logger)
+        {
+            _logger = logger;
+        }
 
-    public override void LogWarning(string message)
-    {
-        logger.LogWarning(message);
-    }
+        public override void LogInfo(string message)
+        {
+            _logger.LogInfo(message);
+        }
 
-    public override void LogError(string message)
-    {
-        logger.LogError(message);
+        public override void LogDebug(string message)
+        {
+            _logger.LogDebug(message);
+        }
+
+        public override void LogWarning(string message)
+        {
+            _logger.LogWarning(message);
+        }
+
+        public override void LogError(string message)
+        {
+            _logger.LogError(message);
+        }
     }
 }
