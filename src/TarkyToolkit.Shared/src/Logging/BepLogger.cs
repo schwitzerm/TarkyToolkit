@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace TarkyToolkit.Core.Logging
+namespace TarkyToolkit.Shared.Logging
 {
     public class BepLogger : Logger
     {

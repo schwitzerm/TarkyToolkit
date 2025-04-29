@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TarkyToolkit.Core.Api
+namespace TarkyToolkit.Api
 {
     public class GameWorldApi : TarkovApi
     {

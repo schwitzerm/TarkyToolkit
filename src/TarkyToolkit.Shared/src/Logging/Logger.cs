@@ -1,4 +1,4 @@
-﻿namespace TarkyToolkit.Core.Logging
+﻿namespace TarkyToolkit.Shared.Logging
 {
     public abstract class Logger
     {

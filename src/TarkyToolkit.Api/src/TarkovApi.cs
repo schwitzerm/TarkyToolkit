@@ -1,15 +1,16 @@
-﻿using TarkyToolkit.Core.Context;
+﻿using TarkyToolkit.Core;
+using TarkyToolkit.Core.Context;
 using UnityEngine;
-using Logger = TarkyToolkit.Core.Logging.Logger;
+using Logger = TarkyToolkit.Shared.Logging.Logger;
 
-namespace TarkyToolkit.Core.Api
+namespace TarkyToolkit.Api
 {
     public abstract class TarkovApi : MonoBehaviour
     {
         internal static TarkovContext TarkovContext { get; private set; } = null!;
         internal static Logger Logger { get; private set; } = null!;
 
-        protected TarkovApi() : this(TarkyToolkitCorePlugin.Logger)
+        protected TarkovApi() : this(TarkyToolkitApiPlugin.Logger)
         {
             TarkovContext = gameObject.GetComponent<TarkovContext>();
         }

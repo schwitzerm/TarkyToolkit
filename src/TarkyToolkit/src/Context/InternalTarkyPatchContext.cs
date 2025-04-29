@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using TarkyToolkit.Core.Context;
 using TarkyToolkit.Patch;
+using TarkyToolkit.Shared.Context;
 using UnityEngine;
-using Logger = TarkyToolkit.Core.Logging.Logger;
+using Logger = TarkyToolkit.Shared.Logging.Logger;
 
 namespace TarkyToolkit.Context
 {

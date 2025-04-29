@@ -4,8 +4,8 @@ using JetBrains.Annotations;
 using SPT.Reflection;
 using TarkyToolkit.Context;
 using TarkyToolkit.Core.Context;
-using TarkyToolkit.Core.Logging;
 using TarkyToolkit.Patch;
+using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit
 {

@@ -3,7 +3,7 @@ using System.Reflection;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Core.Patch;
-using TarkyToolkit.Core.Utils;
+using TarkyToolkit.Shared.Utils;
 using UnityEngine;
 
 namespace TarkyToolkit.TestSoftFailPlugin.Patch

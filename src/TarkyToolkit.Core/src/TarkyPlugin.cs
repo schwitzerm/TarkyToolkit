@@ -1,6 +1,6 @@
 ﻿using BepInEx;
 using TarkyToolkit.Core.Context;
-using TarkyToolkit.Core.Logging;
+using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Core
 {

@@ -39,14 +39,10 @@ namespace TarkyToolkit.TestSoftFailPlugin
             try
             {
                 _timeDiff += Time.deltaTime;
-                if (!(_timeDiff > 5f)) return;
+                if (!(_timeDiff > 10f)) return;
 
                 _timeDiff = 0f;
-                Logger.LogDebug("TestSoftFailPlugin is alive. Looking for player...");
-                var player = TarkovContext.GameWorldApi.Player;
-                Logger.LogDebug(player is not null
-                    ? $"Player found. Player's nickname is: {player.Profile.Nickname ?? "UNKNOWN"}"
-                    : "Player not found.");
+                Logger.LogDebug("TestSoftFailPlugin is alive.");
             }
             catch (Exception e)
             {

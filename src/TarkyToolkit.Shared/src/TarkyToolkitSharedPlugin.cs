@@ -1,6 +1,6 @@
 ﻿using BepInEx;
 using JetBrains.Annotations;
-using TarkyToolkit.Core.Logging;
+using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Shared
 {

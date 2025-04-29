@@ -1,9 +1,10 @@
-﻿using TarkyToolkit.Core.Logging;
-using TarkyToolkit.Core.Patch;
+﻿using TarkyToolkit.Shared.Patch;
+using UnityEngine;
+using Logger = TarkyToolkit.Shared.Logging.Logger;
 
-namespace TarkyToolkit.Core.Context
+namespace TarkyToolkit.Shared.Context
 {
-    public interface IPatchContext<T> where T : TarkyPatch
+    public interface IPatchContext<T> where T : ITarkyPatch
     {
         abstract Logger Logger { get; }
         bool PatchesEnabled { get; }
