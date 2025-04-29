@@ -1,8 +1,47 @@
-﻿namespace TarkyToolkit.Core.Api;
+﻿// ReSharper disable MergeConditionalExpression
+namespace TarkyToolkit.Core.Api;
 
 public class GameWorldApi : TarkovApi
 {
-    public List<EFT.Player> GetAllAlivePlayers() => TarkovContext.GameWorld?.AllAlivePlayersList ?? [];
-    public List<EFT.Player> GetAllPlayersToEverExist() => TarkovContext.GameWorld?.AllPlayersEverExisted?.ToList() ?? [];
-    public EFT.Player? Player => TarkovContext?.GameWorld?.MainPlayer;
+    public List<EFT.Player> GetAllAlivePlayers
+    {
+        get
+        {
+            if (TarkovContext.GameWorld is not null &&
+                TarkovContext.GameWorld.AllAlivePlayersList is not null)
+            {
+                return TarkovContext.GameWorld.AllAlivePlayersList;
+            }
+
+            return [];
+        }
+    }
+
+    public IEnumerable<EFT.Player> GetAllPlayersToEverExist
+    {
+        get
+        {
+            if (TarkovContext.GameWorld is not null &&
+                TarkovContext.GameWorld.AllPlayersEverExisted is not null)
+            {
+                return TarkovContext.GameWorld.AllPlayersEverExisted;
+            }
+
+            return [];
+        }
+    }
+
+    public EFT.Player Player
+    {
+        get
+        {
+            if (TarkovContext.GameWorld is not null &&
+                TarkovContext.GameWorld.MainPlayer is not null)
+            {
+                return TarkovContext.GameWorld.MainPlayer;
+            }
+
+            return null;
+        }
+    }
 }

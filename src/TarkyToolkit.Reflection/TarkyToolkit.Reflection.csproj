@@ -12,7 +12,7 @@
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <PackageId>Mellow_.TarkyToolkit.Reflection</PackageId>
         <Title>TarkyToolkit.Reflection</Title>
         <Authors>Mellow_</Authors>
