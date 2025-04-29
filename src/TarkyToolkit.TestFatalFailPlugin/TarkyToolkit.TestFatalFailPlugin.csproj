@@ -13,7 +13,7 @@
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit.TestFatalFailPlugin</RootNamespace>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit.TestFatalFailPlugin</Description>
         <Company>Mellow_</Company>

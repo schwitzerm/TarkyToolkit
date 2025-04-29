@@ -5,7 +5,7 @@ namespace TarkyToolkit.Core.Utils;
 
 public class TarkyPatchUtils
 {
-    public static MethodBase? GetAwakeMethod<T>() where T : MonoBehaviour
+    public static MethodBase GetAwakeMethod<T>() where T : MonoBehaviour
     {
         return typeof(T).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public);
     }

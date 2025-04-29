@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <LangVersion>latestmajor</LangVersion>
         <AssemblyName>Mellow_.TarkyToolkit.Shared</AssemblyName>
         <PackageId>Mellow_.TarkyToolkit.Shared</PackageId>

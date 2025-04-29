@@ -12,7 +12,7 @@
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit</RootNamespace>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <PackageId>TarkyToolkit</PackageId>
         <Title>TarkyToolkit</Title>
         <Authors>Mellow_</Authors>
