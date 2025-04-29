@@ -12,7 +12,7 @@ namespace TarkyToolkit.Logging
 {
     /// <summary>
     /// A thread-safe logger that streams log messages to a remote endpoint.
-    /// Handles thread safety similar to BepLogger by queuing messages when called from non-main threads.
+    /// Uses a BepLogger for local logging and fallback.
     /// </summary>
     public class StreamingLogger : IAsyncLogger, IDisposable
     {
@@ -248,10 +248,14 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Formats a log message with level and source information
+        /// Formats a log message to be consistent with SPT's ManualLogSource
         /// </summary>
         private string FormatMessage(string level, string message)
         {
+            // This is broken. We only need to format this string if it's NOT being passed to the local logger.
+            // With this class structured as it is, this will format it regardless.
+            //
+            // I'm too lazy to add a formatting class right now so this is what I am doing. Will correct after testing.
             return $"[{level,-5} :{SourceName}] {message}";
         }
 
@@ -299,11 +303,11 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Immediately processes all pending log messages from the queue
+        /// Immediately processes all pending log messages
         /// </summary>
         private void ProcessPendingLogs()
         {
-            if (_disposed || !UnityUtils.IsOnMainThread() || !_coroutineRunner) return;
+            if (_disposed || !_coroutineRunner || !UnityUtils.IsOnMainThread()) return;
 
             try
             {
@@ -337,7 +341,7 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Disposes of resources used by the logger
+        /// Disposes of resources...
         /// </summary>
         public void Dispose()
         {
