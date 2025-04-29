@@ -1,13 +1,13 @@
 ﻿using EFT;
 using TarkyToolkit.Shared.Context;
+using TarkyToolkit.Shared.Logging;
 using UnityEngine;
-using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Core.Context
 {
     public class TarkovContext : MonoBehaviour, ITarkovContext
     {
-        public ILogger Logger { get; } = TarkyPlugin.Logger;
+        public AsyncLogger Logger { get; } = TarkyPlugin.Logger;
         public GameWorld GameWorld { get; set; }
     }
 }

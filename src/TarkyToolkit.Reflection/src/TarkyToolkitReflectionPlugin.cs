@@ -12,12 +12,12 @@ namespace TarkyToolkit.Reflection
     [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
     public class TarkyToolkitReflectionPlugin : BaseUnityPlugin
     {
-        internal new static ILogger Logger { get; private set; }
+        internal new static AsyncLogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
         {
-            Logger = new BepLogger(base.Logger);
+            Logger = gameObject.GetComponent<StreamingLogger>();
         }
     }
 }

@@ -12,22 +12,22 @@ namespace TarkyToolkit.Logging
 {
     /// <summary>
     /// A thread-safe logger that streams log messages to a remote endpoint.
-    /// Handles thread safety similar to BepLogger by queuing messages when called from non-main threads.
+    /// Uses a IThreadSafeLogger for local logging and fallback.
     /// </summary>
-    public class StreamingLogger : IAsyncLogger, IDisposable
+    public class StreamingLogger : AsyncLogger
     {
         private const int MAX_QUEUE_SIZE = 1000;
 
-        private readonly string _streamUrl;
-        private readonly IThreadSafeLogger _localLogger;
         private readonly ConcurrentQueue<LogMessage> _pendingLogs = new ConcurrentQueue<LogMessage>();
 
         private MonoBehaviour _coroutineRunner;
         private Coroutine _processingCoroutine;
         private bool _processingStarted;
         private bool _disposed;
+        private string _streamUrl;
+        private ThreadSafeLogger _localLogger;
 
-        public string SourceName => _localLogger.SourceName;
+        public override string SourceName => _localLogger.SourceName;
 
         /// <summary>
         /// Represents a queued log message with its associated log level
@@ -48,32 +48,15 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Initializes a new streaming logger that sends logs to a remote endpoint
-        /// </summary>
-        /// <param name="url">The URL of the remote logging endpoint</param>
-        /// <param name="localLogger">A BepLogger for local logging and fallback</param>
-        /// <param name="coroutineRunner">Optional MonoBehaviour to run coroutines</param>
-        public StreamingLogger(string url, BepLogger localLogger, MonoBehaviour coroutineRunner = null)
-        {
-            _streamUrl = url ?? throw new ArgumentNullException(nameof(url));
-            _localLogger = localLogger ?? throw new ArgumentNullException(nameof(localLogger));
-            _coroutineRunner = coroutineRunner;
-
-            // If we have a coroutine runner, set up processing immediately
-            if (_coroutineRunner != null)
-            {
-                SetupProcessing(_coroutineRunner);
-            }
-        }
-
-        /// <summary>
         /// Sets up message processing using the specified MonoBehaviour
         /// </summary>
-        /// <param name="host">A MonoBehaviour that will host the logging coroutine</param>
-        public void SetupProcessing(MonoBehaviour host)
+        public override void SetupProcessing(MonoBehaviour host, string url, ThreadSafeLogger localLogger)
         {
             if (_disposed) throw new ObjectDisposedException(nameof(StreamingLogger));
             if (host == null) throw new ArgumentNullException(nameof(host));
+
+            _streamUrl = url ?? throw new ArgumentNullException(nameof(url));
+            _localLogger = localLogger ?? throw new ArgumentNullException(nameof(localLogger));
 
             // Still need synchronization for coroutine management
             lock (this)
@@ -107,7 +90,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Stops the log processing coroutine if it's running
         /// </summary>
-        public void StopProcessing()
+        public override void StopProcessing()
         {
             // Still need synchronization for coroutine management
             lock (this)
@@ -151,7 +134,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs a debug message
         /// </summary>
-        public Task LogDebug(string message)
+        public override Task LogDebug(string message)
         {
             if (_disposed) return Task.CompletedTask;
 
@@ -176,7 +159,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs an info message
         /// </summary>
-        public Task LogInfo(string message)
+        public override Task LogInfo(string message)
         {
             if (_disposed) return Task.CompletedTask;
 
@@ -201,7 +184,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs a warning message
         /// </summary>
-        public Task LogWarning(string message)
+        public override Task LogWarning(string message)
         {
             if (_disposed) return Task.CompletedTask;
 
@@ -226,7 +209,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs an error message
         /// </summary>
-        public Task LogError(string message)
+        public override Task LogError(string message)
         {
             if (_disposed) return Task.CompletedTask;
 
@@ -248,10 +231,14 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Formats a log message with level and source information
+        /// Formats a log message to be consistent with SPT's ManualLogSource
         /// </summary>
         private string FormatMessage(string level, string message)
         {
+            // This is broken. We only need to format this string if it's NOT being passed to the local logger.
+            // With this class structured as it is, this will format it regardless.
+            //
+            // I'm too lazy to add a formatting class right now, so this is what I am doing. Will correct after testing.
             return $"[{level,-5} :{SourceName}] {message}";
         }
 
@@ -299,11 +286,11 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Immediately processes all pending log messages from the queue
+        /// Immediately processes all pending log messages
         /// </summary>
         private void ProcessPendingLogs()
         {
-            if (_disposed || !UnityUtils.IsOnMainThread() || !_coroutineRunner) return;
+            if (_disposed || !_coroutineRunner || !UnityUtils.IsOnMainThread()) return;
 
             try
             {
@@ -339,7 +326,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Disposes of resources used by the logger
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
             if (_disposed) return;
 

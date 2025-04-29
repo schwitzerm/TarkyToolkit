@@ -14,41 +14,50 @@ namespace TarkyToolkit
     [BepInDependency("com.SPT.core", "3.11.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Api", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Core", "0.1.0")]
+    [BepInDependency("Mellow_.TarkyToolkit.Logging", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Reflection", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
+    [BepInDependency("Mellow_.TarkyToolkit.Unity", "0.1.0")]
     [BepInProcess("EscapeFromTarkov.exe")]
     public class TarkyToolkitPlugin : BaseUnityPlugin
     {
         private static InternalTarkyPatchContext _internalTarkyPatchContext;
         private static TarkyPatchContext _tarkyPatchContext;
         private static TarkovContext _tarkovContext;
-        internal new static ILogger Logger { get; private set; }
+        private static ThreadSafeLogger _localLogger;
+        internal new static AsyncLogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
         {
             try
             {
-                Logger = new BepLogger(base.Logger);
-                Logger.LogDebug("Initializing TarkyToolkit core modules.");
+                _localLogger = gameObject.AddComponent<BepLogger>();
+                _localLogger.SetupProcessing(this, base.Logger);
+                DontDestroyOnLoad(_localLogger);
+                Logger = gameObject.AddComponent<StreamingLogger>();
+                Logger.SetupProcessing(this, "localhost:22322", _localLogger);
+                DontDestroyOnLoad(Logger);
+
+                Logger.LogDebug("Initializing core modules.");
                 _internalTarkyPatchContext = gameObject.AddComponent<InternalTarkyPatchContext>();
-                DontDestroyOnLoad(_internalTarkyPatchContext);
                 _tarkyPatchContext = gameObject.AddComponent<TarkyPatchContext>();
-                DontDestroyOnLoad(_tarkyPatchContext);
                 _tarkovContext = gameObject.AddComponent<TarkovContext>();
+                DontDestroyOnLoad(_internalTarkyPatchContext);
+                DontDestroyOnLoad(_tarkyPatchContext);
                 DontDestroyOnLoad(_tarkovContext);
+                Logger.LogDebug("Core modules initialized.");
 
                 Logger.LogDebug("Enabling internal patches.");
                 _internalTarkyPatchContext.EnablePatches(new InternalTarkyPatch[] {
                     new RefOnAwakePatch(gameObject),
                     new DerefOnDestroyPatch(gameObject)
                 });
-
-                Logger.LogDebug("TarkyToolkit core modules initialized.");
+                Logger.LogDebug("Internal patches enabled.");
             }
             catch (Exception e)
             {
-                Logger.LogError("Failed to initialize TarkyToolkit.");
+                Logger.LogError("Failed to initialize!");
                 Logger.LogError(e.ToString());
 
                 if (_internalTarkyPatchContext)
