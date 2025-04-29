@@ -8,7 +8,7 @@ To do so, run: `setx SPTCLIENTPLUGINSPATH "<YourPluginsPath>"`
 
 In my case (using Windows path separators...): `setx SPTCLIENTPLUGINSPATH "E:\SPT\BepInEx\plugins"`
 
-Read the README files in each folder in lib to know what to put where. 
+Read the README files in each folder in `lib/` to know what to put where. 
 If you don't like opening multiple files:
    * Copy all files from `<YourSPTInstall>/BepInEx/core` to `lib/BepInEx`.
    * Copy all files from `<YourSPTInstall>/BepInEx/plugins/spt` to `lib/SPT`.
