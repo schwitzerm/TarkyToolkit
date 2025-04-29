@@ -1,10 +1,11 @@
-﻿using TarkyToolkit.Shared.Logging;
+﻿using EFT;
+using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Shared.Context
 {
     public interface ITarkovContext
     {
-        abstract Logger Logger { get; }
-        EFT.GameWorld? GameWorld { get; set; }
+        ILogger Logger { get; }
+        GameWorld GameWorld { get; set; }
     }
 }

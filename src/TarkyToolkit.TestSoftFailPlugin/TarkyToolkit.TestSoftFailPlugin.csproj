@@ -6,14 +6,14 @@
         <Product>TarkyToolkit.TestSoftFailPlugin</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>9</LangVersion>
+        <LangVersion>7.3</LangVersion>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
         <RootNamespace>TarkyToolkit.TestSoftFailPlugin</RootNamespace>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit.TestSoftFailPlugin</Description>
         <Company>Mellow_</Company>
@@ -23,10 +23,6 @@
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
-
-    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TarkyToolkit\TarkyToolkit.csproj" />

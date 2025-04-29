@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using TarkyToolkit.Core.Context;
+using TarkyToolkit.Logging;
 using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Core
@@ -9,10 +10,10 @@ namespace TarkyToolkit.Core
 #pragma warning restore BepInEx001
     {
         public static bool StoppedFatally { get; } = false;
-        protected static TarkyPatchContext TarkyPatchContext { get; private set; } = null!;
-        protected static TarkovContext TarkovContext { get; private set; } = null!;
-        public new static Logger Logger { get; private set; } = null!;
-        public static string Name { get; private set; } = "";
+        protected static TarkyPatchContext TarkyPatchContext { get; private set; }
+        protected static TarkovContext TarkovContext { get; private set; }
+        public new static ILogger Logger { get; private set; }
+        public static string Name { get; private set; }
 
         protected TarkyPlugin()
         {
@@ -22,7 +23,7 @@ namespace TarkyToolkit.Core
             Name = GetType().Name;
         }
 
-        protected TarkyPlugin(Logger logger)
+        protected TarkyPlugin(ILogger logger)
         {
             TarkovContext = gameObject.GetComponent<TarkovContext>();
             TarkyPatchContext = gameObject.GetComponent<TarkyPatchContext>();

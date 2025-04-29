@@ -2,15 +2,15 @@
 using TarkyToolkit.Core.Context;
 using TarkyToolkit.Shared.Patch;
 using UnityEngine;
-using Logger = TarkyToolkit.Shared.Logging.Logger;
+using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Core.Patch
 {
     public abstract class TarkyPatch : ModulePatch, ITarkyPatch
     {
         public abstract bool FatalOnPatchError { get; }
-        protected static TarkovContext TarkovContext { get; private set; } = null!;
-        protected new static Logger Logger { get; private set; } = null!;
+        protected static TarkovContext TarkovContext { get; private set; }
+        protected new static ILogger Logger { get; private set; }
 
         protected TarkyPatch(GameObject rootObject)
         {

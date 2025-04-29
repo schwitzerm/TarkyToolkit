@@ -30,7 +30,7 @@ namespace TarkyToolkit.Patch.GameWorld
         [UsedImplicitly]
         protected override MethodBase GetTargetMethod()
         {
-            return TarkyPatchUtils.GetAwakeMethod<EFT.GameWorld>()!;
+            return TarkyPatchUtils.GetAwakeMethod<EFT.GameWorld>();
         }
 
         [PatchPostfix]

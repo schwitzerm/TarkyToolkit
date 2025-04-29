@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <Product>TarkyToolkit.Core</Product>
+        <Product>TarkyToolkit.Logging</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>7.3</LangVersion>
@@ -11,15 +11,15 @@
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
-        <RootNamespace>TarkyToolkit.Core</RootNamespace>
+        <RootNamespace>TarkyToolkit.Logging</RootNamespace>
         <Nullable>disable</Nullable>
-        <PackageId>Mellow_.TarkyToolkit.Core</PackageId>
-        <Title>TarkyToolkit.Core</Title>
+        <PackageId>Mellow_.TarkyToolkit.Logging</PackageId>
+        <Title>TarkyToolkit.Logging</Title>
         <Authors>Mellow_</Authors>
-        <Description>TarkyToolkit.Core</Description>
+        <Description>TarkyToolkit.Logging</Description>
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
-        <AssemblyName>Mellow_.TarkyToolkit.Core</AssemblyName>
+        <AssemblyName>Mellow_.TarkyToolkit.Logging</AssemblyName>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -34,17 +34,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="Assembly-CSharp">
-        <HintPath>..\..\lib\TarkovManaged\Assembly-CSharp.dll</HintPath>
-      </Reference>
+        <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
+        <ProjectReference Include="..\TarkyToolkit.Unity\TarkyToolkit.Unity.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Reference Include="BepInEx">
         <HintPath>..\..\lib\BepInEx\BepInEx.dll</HintPath>
-      </Reference>
-      <Reference Include="spt-reflection">
-        <HintPath>..\..\lib\SPT\spt-reflection.dll</HintPath>
-      </Reference>
-      <Reference Include="UnityEngine">
-        <HintPath>..\..\lib\TarkovManaged\UnityEngine.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>..\..\lib\TarkovManaged\UnityEngine.CoreModule.dll</HintPath>
@@ -54,13 +50,7 @@
       </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\TarkyToolkit.Logging\TarkyToolkit.Logging.csproj" />
-      <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
-    </ItemGroup>
-
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
+        <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
     </Target>
-
 </Project>

@@ -3,7 +3,9 @@ using BepInEx;
 using JetBrains.Annotations;
 using TarkyToolkit.Context;
 using TarkyToolkit.Core.Context;
+using TarkyToolkit.Logging;
 using TarkyToolkit.Patch;
+using TarkyToolkit.Patch.GameWorld;
 using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit
@@ -17,10 +19,10 @@ namespace TarkyToolkit
     [BepInProcess("EscapeFromTarkov.exe")]
     public class TarkyToolkitPlugin : BaseUnityPlugin
     {
-        private static InternalTarkyPatchContext _internalTarkyPatchContext = null!;
-        private static TarkyPatchContext _tarkyPatchContext = null!;
-        private static TarkovContext _tarkovContext = null!;
-        internal new static Logger Logger { get; private set; } = null!;
+        private static InternalTarkyPatchContext _internalTarkyPatchContext;
+        private static TarkyPatchContext _tarkyPatchContext;
+        private static TarkovContext _tarkovContext;
+        internal new static ILogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
@@ -38,8 +40,8 @@ namespace TarkyToolkit
 
                 Logger.LogDebug("Enabling internal patches.");
                 _internalTarkyPatchContext.EnablePatches(new InternalTarkyPatch[] {
-                    new Patch.GameWorld.RefOnAwakePatch(gameObject),
-                    new Patch.GameWorld.DerefOnDestroyPatch(gameObject)
+                    new RefOnAwakePatch(gameObject),
+                    new DerefOnDestroyPatch(gameObject)
                 });
 
                 Logger.LogDebug("TarkyToolkit core modules initialized.");
@@ -52,17 +54,17 @@ namespace TarkyToolkit
                 if (_internalTarkyPatchContext)
                 {
                     Destroy(_internalTarkyPatchContext);
-                    _internalTarkyPatchContext = null!;
+                    _internalTarkyPatchContext = null;
                 }
                 if (_tarkyPatchContext)
                 {
                     Destroy(_tarkyPatchContext);
-                    _tarkyPatchContext = null!;
+                    _tarkyPatchContext = null;
                 }
                 if (_tarkovContext)
                 {
                     Destroy(_tarkovContext);
-                    _tarkovContext = null!;
+                    _tarkovContext = null;
                 }
             }
         }

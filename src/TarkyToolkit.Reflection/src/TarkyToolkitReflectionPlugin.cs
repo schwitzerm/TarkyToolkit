@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using JetBrains.Annotations;
+using TarkyToolkit.Logging;
 using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Reflection
@@ -11,7 +12,7 @@ namespace TarkyToolkit.Reflection
     [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
     public class TarkyToolkitReflectionPlugin : BaseUnityPlugin
     {
-        internal new static Logger Logger { get; private set; } = null!;
+        internal new static ILogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
