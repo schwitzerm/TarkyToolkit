@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TarkyToolkit.Patch;
 using TarkyToolkit.Core.Context;
+using TarkyToolkit.Patch;
 using UnityEngine;
 using Logger = TarkyToolkit.Core.Logging.Logger;
 

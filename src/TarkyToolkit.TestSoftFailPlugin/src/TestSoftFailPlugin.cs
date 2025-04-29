@@ -2,18 +2,17 @@
 using BepInEx;
 using JetBrains.Annotations;
 using TarkyToolkit.Core;
-using TarkyToolkit.Core.Exceptions;
-using TarkyToolkit.TestPlugin.Patch;
+using TarkyToolkit.TestSoftFailPlugin.Patch;
 using UnityEngine;
 
-namespace TarkyToolkit.TestPlugin;
+namespace TarkyToolkit.TestSoftFailPlugin;
 
-[BepInPlugin("Mellow_.TarkyToolkit.TestPluginSoftFail", "TarkyToolkit.TestPluginSoftFail", "0.1.0")]
+[BepInPlugin("Mellow_.TarkyToolkit.TestSoftFailPlugin", "TarkyToolkit.TestSoftFailPlugin", "0.1.0")]
 [BepInDependency("Mellow_.TarkyToolkit", "0.1.0")]
 [BepInProcess("EscapeFromTarkov.exe")]
 public class TestSoftFailPlugin : TarkyPlugin
 {
-    private float _timeDiff = 0;
+    private float _timeDiff;
 
     [UsedImplicitly]
     private void Awake()
@@ -36,9 +35,10 @@ public class TestSoftFailPlugin : TarkyPlugin
     private void Update()
     {
         _timeDiff += Time.deltaTime;
-        if (_timeDiff > 5)
+        if (_timeDiff > 10f)
         {
-            Logger.LogDebug("TestPlugin is running.");
+            Logger.LogDebug("TestSoftFailPlugin is alive.");
+            _timeDiff = 0f;
         }
     }
 }

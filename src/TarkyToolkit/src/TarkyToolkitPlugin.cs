@@ -2,9 +2,9 @@
 using BepInEx;
 using JetBrains.Annotations;
 using TarkyToolkit.Context;
-using TarkyToolkit.Patch;
 using TarkyToolkit.Core.Context;
 using TarkyToolkit.Core.Logging;
+using TarkyToolkit.Patch;
 
 namespace TarkyToolkit;
 

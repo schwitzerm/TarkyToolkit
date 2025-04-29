@@ -5,11 +5,11 @@ using SPT.Reflection.Patching;
 using TarkyToolkit.Core.Patch;
 using UnityEngine;
 
-namespace TarkyToolkit.TestPlugin.Patch;
+namespace TarkyToolkit.TestSoftFailPlugin.Patch;
 
-public class FatalFailingPatch(GameObject rootObject) : TarkyPatch(rootObject)
+public class SoftFailPatch(GameObject rootObject) : TarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError { get; set; } = true;
+    public override bool FatalOnPatchError { get; set; } = false;
 
     protected override MethodBase GetTargetMethod()
     {
