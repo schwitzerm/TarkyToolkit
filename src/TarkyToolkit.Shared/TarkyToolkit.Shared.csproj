@@ -2,25 +2,27 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <AssemblyName>Mellow_.TarkyToolkit.Shared</AssemblyName>
         <Product>TarkyToolkit.Shared</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <LangVersion>9</LangVersion>
+        <LangVersion>7.3</LangVersion>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
-        <Nullable>enable</Nullable>
+        <RootNamespace>TarkyToolkit.Shared</RootNamespace>
+        <Nullable>disable</Nullable>
         <PackageId>Mellow_.TarkyToolkit.Shared</PackageId>
         <Title>TarkyToolkit.Shared</Title>
         <Authors>Mellow_</Authors>
         <Description>TarkyToolkit.Shared</Description>
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
+        <AssemblyName>Mellow_.TarkyToolkit.Shared</AssemblyName>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <IsPackable>false</IsPackable>
+        <ImplicitUsings>false</ImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -29,70 +31,25 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <OutputPath>bin\Release</OutputPath>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
-    </ItemGroup>
-
     <ItemGroup>
-        <Reference Include="0Harmony">
-            <HintPath>..\..\lib\BepInEx\0Harmony.dll</HintPath>
-        </Reference>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>..\..\lib\TarkovManaged\Assembly-CSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="BepInEx">
-            <HintPath>..\..\lib\BepInEx\BepInEx.dll</HintPath>
-        </Reference>
-        <Reference Include="ConfigurationManager">
-            <HintPath>..\..\lib\SPT\ConfigurationManager.dll</HintPath>
-        </Reference>
-        <Reference Include="Mono.Cecil">
-            <HintPath>..\..\lib\BepInEx\Mono.Cecil.dll</HintPath>
-        </Reference>
-        <Reference Include="Mono.Cecil.Mdb">
-            <HintPath>..\..\lib\BepInEx\Mono.Cecil.Mdb.dll</HintPath>
-        </Reference>
-        <Reference Include="Mono.Cecil.Pdb">
-            <HintPath>..\..\lib\BepInEx\Mono.Cecil.Pdb.dll</HintPath>
-        </Reference>
-        <Reference Include="Mono.Cecil.Rocks">
-            <HintPath>..\..\lib\BepInEx\Mono.Cecil.Rocks.dll</HintPath>
-        </Reference>
-        <Reference Include="MonoMod.RuntimeDetour">
-            <HintPath>..\..\lib\BepInEx\MonoMod.RuntimeDetour.dll</HintPath>
-        </Reference>
-        <Reference Include="MonoMod.Utils">
-            <HintPath>..\..\lib\BepInEx\MonoMod.Utils.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-common">
-            <HintPath>..\..\lib\SPT\spt-common.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-core">
-            <HintPath>..\..\lib\SPT\spt-core.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-custom">
-            <HintPath>..\..\lib\SPT\spt-custom.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-debugging">
-            <HintPath>..\..\lib\SPT\spt-debugging.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-reflection">
-            <HintPath>..\..\lib\SPT\spt-reflection.dll</HintPath>
-        </Reference>
-        <Reference Include="spt-singleplayer">
-            <HintPath>..\..\lib\SPT\spt-singleplayer.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine">
-            <HintPath>..\..\lib\TarkovManaged\UnityEngine.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>..\..\lib\TarkovManaged\UnityEngine.CoreModule.dll</HintPath>
-        </Reference>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>..\..\lib\TarkovManaged\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="BepInEx">
+        <HintPath>..\..\lib\BepInEx\BepInEx.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine">
+        <HintPath>..\..\lib\TarkovManaged\UnityEngine.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+        <HintPath>..\..\lib\TarkovManaged\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
+        <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
     </Target>
 </Project>

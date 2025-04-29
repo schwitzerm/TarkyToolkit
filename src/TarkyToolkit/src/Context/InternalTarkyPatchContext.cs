@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using TarkyToolkit.Patch;
 using TarkyToolkit.Shared.Context;
 using UnityEngine;
-using Logger = TarkyToolkit.Shared.Logging.Logger;
+using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Context
 {
     internal class InternalTarkyPatchContext : MonoBehaviour, IPatchContext<InternalTarkyPatch>
     {
         // ReSharper disable once CollectionNeverQueried.Local
-        private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new();
+        private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new Dictionary<string, InternalTarkyPatch>();
         public bool PatchesEnabled { get; private set; }
-        public Logger Logger => TarkyToolkitPlugin.Logger;
+        public ILogger Logger => TarkyToolkitPlugin.Logger;
 
         public void EnablePatches(InternalTarkyPatch[] toApply)
         {
@@ -24,6 +24,10 @@ namespace TarkyToolkit.Context
             foreach (var patch in toApply)
             {
                 var patchName = patch.GetType().FullName;
+                if (patchName == null)
+                {
+                    throw new NullReferenceException("Patch name is null.");
+                }
                 try
                 {
                     Logger.LogDebug($"Applying internal patch {patchName}.");
@@ -44,7 +48,7 @@ namespace TarkyToolkit.Context
                         DisableAllPatches(true);
                         throw;
                     }
-                    Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                    Logger.LogWarning("Ignoring patch and continuing. This may cause strange behaviour!");
                     Logger.LogWarning(e.ToString());
                 }
             }

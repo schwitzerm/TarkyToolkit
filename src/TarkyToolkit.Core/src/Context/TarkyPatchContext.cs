@@ -4,16 +4,16 @@ using TarkyToolkit.Core.Exceptions;
 using TarkyToolkit.Core.Patch;
 using TarkyToolkit.Shared.Context;
 using UnityEngine;
-using Logger = TarkyToolkit.Shared.Logging.Logger;
+using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Core.Context
 {
     public class TarkyPatchContext : MonoBehaviour, IPatchContext<TarkyPatch>
     {
-        private readonly Dictionary<string, TarkyPatch> _appliedPatches = new();
+        private readonly Dictionary<string, TarkyPatch> _appliedPatches = new Dictionary<string, TarkyPatch>();
 
         public bool PatchesEnabled { get; private set; }
-        public Logger Logger => TarkyPlugin.Logger;
+        public ILogger Logger => TarkyPlugin.Logger;
 
         public void EnablePatches(TarkyPatch[] toApply)
         {
@@ -27,6 +27,10 @@ namespace TarkyToolkit.Core.Context
                 var patchName = patch.GetType().FullName;
                 try
                 {
+                    if (patchName == null)
+                    {
+                        throw new NullReferenceException("Patch name is null.");
+                    }
                     Logger.LogDebug($"Applying patch {patchName}.");
 
                     patch.Enable();
@@ -45,7 +49,7 @@ namespace TarkyToolkit.Core.Context
                         DisableAllPatches(true);
                         throw new TarkyPatchFailedException(true, e);
                     }
-                    Logger.LogWarning($"Ignoring patch and continuing. This may cause strange behaviour!");
+                    Logger.LogWarning("Ignoring patch and continuing. This may cause strange behaviour!");
                     Logger.LogWarning(e.ToString());
                 }
             }

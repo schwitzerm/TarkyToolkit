@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using EFT;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Core.Patch;
@@ -18,7 +19,7 @@ namespace TarkyToolkit.TestFatalFailPlugin.Patch
         protected override MethodBase GetTargetMethod()
         {
             // not possible, will fail.
-            return typeof(EFT.Player).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public)!;
+            return typeof(Player).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public);
         }
 
         [PatchPostfix]

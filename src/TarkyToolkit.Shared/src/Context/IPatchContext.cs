@@ -1,11 +1,11 @@
-﻿using TarkyToolkit.Shared.Patch;
-using Logger = TarkyToolkit.Shared.Logging.Logger;
+﻿using TarkyToolkit.Shared.Logging;
+using TarkyToolkit.Shared.Patch;
 
 namespace TarkyToolkit.Shared.Context
 {
     public interface IPatchContext<T> where T : ITarkyPatch
     {
-        abstract Logger Logger { get; }
+        ILogger Logger { get; }
         bool PatchesEnabled { get; }
         void EnablePatches(T[] toApply);
         void DisablePatches(T[] toDisable);

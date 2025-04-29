@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using JetBrains.Annotations;
+using TarkyToolkit.Logging;
 using TarkyToolkit.Shared.Logging;
 
 namespace TarkyToolkit.Api
@@ -12,8 +13,8 @@ namespace TarkyToolkit.Api
     [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
     public class TarkyToolkitApiPlugin : BaseUnityPlugin
     {
-        private static GameWorldApi? _gameWorldApi;
-        internal new static Logger Logger { get; private set; } = null!;
+        private static GameWorldApi _gameWorldApi;
+        internal new static ILogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()

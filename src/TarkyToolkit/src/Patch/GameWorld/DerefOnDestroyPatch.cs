@@ -15,7 +15,7 @@ namespace TarkyToolkit.Patch.GameWorld
 
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(EFT.GameWorld).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.Public)!;
+            return typeof(EFT.GameWorld).GetMethod("OnDestroy", BindingFlags.Instance | BindingFlags.Public);
         }
 
         [PatchPostfix]

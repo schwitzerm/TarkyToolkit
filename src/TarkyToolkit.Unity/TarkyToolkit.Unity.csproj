@@ -2,23 +2,25 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <AssemblyName>Mellow_.TarkyToolkit.Reflection</AssemblyName>
-        <Product>TarkyToolkit.Reflection</Product>
+        <Product>TarkyToolkit.Unity</Product>
         <Version>0.1.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>7.3</LangVersion>
+        <ImplicitUsings>false</ImplicitUsings>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
+        <RootNamespace>TarkyToolkit.Unity</RootNamespace>
         <Nullable>disable</Nullable>
-        <PackageId>Mellow_.TarkyToolkit.Reflection</PackageId>
-        <Title>TarkyToolkit.Reflection</Title>
+        <PackageId>Mellow_.TarkyToolkit.Unity</PackageId>
+        <Title>TarkyToolkit.Unity</Title>
         <Authors>Mellow_</Authors>
-        <Description>TarkyToolkit.Reflection</Description>
+        <Description>TarkyToolkit.Unity</Description>
         <AssemblyVersion>0.1.0</AssemblyVersion>
         <FileVersion>0.1.0</FileVersion>
+        <AssemblyName>Mellow_.TarkyToolkit.Unity</AssemblyName>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -29,6 +31,7 @@
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <OutputPath>bin\Release</OutputPath>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
@@ -88,12 +91,7 @@
         </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\TarkyToolkit.Logging\TarkyToolkit.Logging.csproj" />
-      <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
-    </ItemGroup>
-
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
+        <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;$(SPTCLIENTPLUGINSPATH)\$(TargetFileName)&quot;" />
     </Target>
 </Project>
