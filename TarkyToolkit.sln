@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.TestSoftFailPl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.TestFatalFailPlugin", "src\TarkyToolkit.TestFatalFailPlugin\TarkyToolkit.TestFatalFailPlugin.csproj", "{6F25439C-786A-4720-8216-219322321CF1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Api", "src\TarkyToolkit.Api\TarkyToolkit.Api.csproj", "{FE7D291B-9342-4A21-AEDF-FF7E2D991855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.Shared", "src\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj", "{BC42B966-52DC-40F5-8B94-FADE763B48A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{6F25439C-786A-4720-8216-219322321CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F25439C-786A-4720-8216-219322321CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F25439C-786A-4720-8216-219322321CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE7D291B-9342-4A21-AEDF-FF7E2D991855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE7D291B-9342-4A21-AEDF-FF7E2D991855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE7D291B-9342-4A21-AEDF-FF7E2D991855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE7D291B-9342-4A21-AEDF-FF7E2D991855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC42B966-52DC-40F5-8B94-FADE763B48A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC42B966-52DC-40F5-8B94-FADE763B48A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC42B966-52DC-40F5-8B94-FADE763B48A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC42B966-52DC-40F5-8B94-FADE763B48A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
