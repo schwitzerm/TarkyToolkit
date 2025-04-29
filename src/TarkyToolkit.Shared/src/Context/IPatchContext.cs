@@ -1,5 +1,4 @@
 ﻿using TarkyToolkit.Shared.Patch;
-using UnityEngine;
 using Logger = TarkyToolkit.Shared.Logging.Logger;
 
 namespace TarkyToolkit.Shared.Context
