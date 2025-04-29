@@ -93,7 +93,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TarkyToolkit.Core\TarkyToolkit.Core.csproj" />
+      <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -11,8 +11,10 @@ namespace TarkyToolkit
 {
     [BepInPlugin("Mellow_.TarkyToolkit", "TarkyToolkit", "0.1.0")]
     [BepInDependency("com.SPT.core", "3.11.0")]
+    [BepInDependency("Mellow_.TarkyToolkit.Api", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Core", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Reflection", "0.1.0")]
+    [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
     [BepInProcess("EscapeFromTarkov.exe")]
     public class TarkyToolkitPlugin : BaseUnityPlugin
     {

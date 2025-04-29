@@ -56,11 +56,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="src\Api\" />
-      <Folder Include="src\Attributes\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\TarkyToolkit.Shared\TarkyToolkit.Shared.csproj" />
     </ItemGroup>
 
