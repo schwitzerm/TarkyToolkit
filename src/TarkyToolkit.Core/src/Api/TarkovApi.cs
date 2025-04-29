@@ -9,7 +9,7 @@ public abstract class TarkovApi : MonoBehaviour
     internal static TarkovContext TarkovContext { get; private set; } = null!;
     internal static Logger Logger { get; private set; } = null!;
 
-    protected TarkovApi() : this(TarkyToolkitApiPlugin.Logger)
+    protected TarkovApi() : this(TarkyToolkitCorePlugin.Logger)
     {
         TarkovContext = gameObject.GetComponent<TarkovContext>();
     }
