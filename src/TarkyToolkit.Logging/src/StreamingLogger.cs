@@ -255,7 +255,7 @@ namespace TarkyToolkit.Logging
             // This is broken. We only need to format this string if it's NOT being passed to the local logger.
             // With this class structured as it is, this will format it regardless.
             //
-            // I'm too lazy to add a formatting class right now so this is what I am doing. Will correct after testing.
+            // I'm too lazy to add a formatting class right now, so this is what I am doing. Will correct after testing.
             return $"[{level,-5} :{SourceName}] {message}";
         }
 
