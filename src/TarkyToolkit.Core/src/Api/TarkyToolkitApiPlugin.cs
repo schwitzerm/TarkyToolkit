@@ -1,6 +1,7 @@
 ﻿using BepInEx;
+using TarkyToolkit.Core.Logging;
 
-namespace TarkyToolkit.Api;
+namespace TarkyToolkit.Core.Api;
 
 /// <summary>
 /// Stub to load binary. Needed to load and require this binary as a dependency in BepInEx.
@@ -11,4 +12,11 @@ namespace TarkyToolkit.Api;
 [BepInProcess("EscapeFromTarkov.exe")]
 public class TarkyToolkitApiPlugin : BaseUnityPlugin
 {
+    internal new static Logger Logger { get; private set; } = null!;
+
+    private void Awake()
+    {
+        Logger = new BepLogger(base.Logger);
+        gameObject.AddComponent<GameWorldApi>();
+    }
 }

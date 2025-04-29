@@ -101,7 +101,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TarkyToolkit.Api\TarkyToolkit.Api.csproj" />
       <ProjectReference Include="..\TarkyToolkit.Reflection\TarkyToolkit.Reflection.csproj" />
       <ProjectReference Include="..\TarkyToolkit.Core\TarkyToolkit.Core.csproj" />
     </ItemGroup>

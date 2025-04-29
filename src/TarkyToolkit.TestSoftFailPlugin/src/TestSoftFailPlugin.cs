@@ -34,11 +34,27 @@ public class TestSoftFailPlugin : TarkyPlugin
     [UsedImplicitly]
     private void Update()
     {
-        _timeDiff += Time.deltaTime;
-        if (_timeDiff > 10f)
+        try
         {
-            Logger.LogDebug("TestSoftFailPlugin is alive.");
+            _timeDiff += Time.deltaTime;
+            if (!(_timeDiff > 10f)) return;
+
+            if (TarkovContext == null)
+            {
+                Logger.LogDebug("TarkovContext is null in TestSoftFailPlugin context.");
+            }
+
             _timeDiff = 0f;
+            Logger.LogDebug("TestSoftFailPlugin is alive. Looking for player...");
+            var player = TarkovContext?.GameWorldApi?.Player;
+            Logger.LogDebug(player is not null ?
+                $"Player found. Player's nickname is: {player?.Profile.Nickname ?? "UNKNOWN"}" :
+                "Player not found.");
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e.ToString());
+            throw;
         }
     }
 }

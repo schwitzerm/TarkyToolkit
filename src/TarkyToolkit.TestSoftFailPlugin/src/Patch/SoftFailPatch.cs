@@ -3,18 +3,19 @@ using System.Reflection;
 using JetBrains.Annotations;
 using SPT.Reflection.Patching;
 using TarkyToolkit.Core.Patch;
+using TarkyToolkit.Core.Utils;
 using UnityEngine;
 
 namespace TarkyToolkit.TestSoftFailPlugin.Patch;
 
 public class SoftFailPatch(GameObject rootObject) : TarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError { get; set; } = false;
+    public override bool FatalOnPatchError => false;
 
     protected override MethodBase GetTargetMethod()
     {
         // not possible, will fail.
-        return typeof(EFT.Player).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public)!;
+        return TarkyPatchUtils.GetAwakeMethod<EFT.Player>()!;
     }
 
     [PatchPostfix]

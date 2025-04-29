@@ -1,5 +1,7 @@
 ﻿using BepInEx;
+using EFT;
 using JetBrains.Annotations;
+using TarkyToolkit.Core.Api;
 using TarkyToolkit.Core.Logging;
 
 namespace TarkyToolkit.Core;

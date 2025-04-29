@@ -9,7 +9,7 @@ namespace TarkyToolkit.TestFatalFailPlugin.Patch;
 
 public class FatalFailPatch(GameObject rootObject) : TarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError { get; set; } = true;
+    public override bool FatalOnPatchError => true;
 
     protected override MethodBase GetTargetMethod()
     {

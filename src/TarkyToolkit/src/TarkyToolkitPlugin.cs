@@ -10,7 +10,6 @@ namespace TarkyToolkit;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 [BepInDependency("com.SPT.core", "3.11.0")]
-[BepInDependency("Mellow_.TarkyToolkit.Api", "0.1.0")]
 [BepInDependency("Mellow_.TarkyToolkit.Core", "0.1.0")]
 [BepInDependency("Mellow_.TarkyToolkit.Reflection", "0.1.0")]
 [BepInProcess("EscapeFromTarkov.exe")]
@@ -38,7 +37,8 @@ public class TarkyToolkitPlugin : BaseUnityPlugin
             Logger.LogDebug("Enabling internal patches.");
             InternalTarkyPatch[] internalToApply =
             [
-                new Patch.GameWorld.AssignOnAwakePatch(gameObject)
+                new Patch.GameWorld.RefOnAwakePatch(gameObject),
+                new Patch.GameWorld.DerefOnAwakePatch(gameObject)
             ];
             _internalTarkyPatchContext.EnablePatches(internalToApply);
 

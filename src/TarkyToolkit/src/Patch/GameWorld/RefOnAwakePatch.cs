@@ -14,9 +14,9 @@ namespace TarkyToolkit.Patch.GameWorld;
 /// <remarks>
 /// Is fatal on error and will disable and destroy ALL TarkyPatch instances should it fail to apply.
 /// </remarks>
-internal class AssignOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
+internal class RefOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
 {
-    public override bool FatalOnPatchError { get; set; } = true;
+    public override bool FatalOnPatchError => true;
 
     [UsedImplicitly]
     protected override MethodBase GetTargetMethod()
@@ -29,25 +29,17 @@ internal class AssignOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(ro
     // ReSharper disable once InconsistentNaming
     private static void Postfix(EFT.GameWorld __instance)
     {
-        try
+        if (__instance == null)
         {
-            if (__instance == null)
-            {
-                throw new NullReferenceException("GameWorld reference is null on Awake. Something is seriously wrong!");
-            }
-
-            if (TarkovContext == null)
-            {
-                throw new NullReferenceException("TarkovContext reference is null.");
-            }
-
-            TarkovContext.GameWorld = __instance;
-            Logger.LogDebug("GameWorld reference assigned.");
+            throw new NullReferenceException("GameWorld reference is null on Awake. Something is seriously wrong!");
         }
-        catch (Exception)
+
+        if (TarkovContext == null)
         {
-            Logger.LogError("Failed to assign GameWorld reference.");
-            throw;
+            throw new NullReferenceException("TarkovContext reference is null.");
         }
+
+        TarkovContext.GameWorld = __instance;
+        Logger.LogDebug("GameWorld found! Registering with TarkovContext.");
     }
 }
