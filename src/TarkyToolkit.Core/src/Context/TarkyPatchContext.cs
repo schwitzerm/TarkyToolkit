@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using TarkyToolkit.Core.Exceptions;
 using TarkyToolkit.Core.Patch;
 using TarkyToolkit.Shared.Context;
+using TarkyToolkit.Shared.Logging;
 using UnityEngine;
-using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Core.Context
 {
@@ -13,7 +13,7 @@ namespace TarkyToolkit.Core.Context
         private readonly Dictionary<string, TarkyPatch> _appliedPatches = new Dictionary<string, TarkyPatch>();
 
         public bool PatchesEnabled { get; private set; }
-        public ILogger Logger => TarkyPlugin.Logger;
+        public AsyncLogger Logger => TarkyPlugin.Logger;
 
         public void EnablePatches(TarkyPatch[] toApply)
         {

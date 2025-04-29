@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using TarkyToolkit.Patch;
 using TarkyToolkit.Shared.Context;
+using TarkyToolkit.Shared.Logging;
 using UnityEngine;
-using ILogger = TarkyToolkit.Shared.Logging.ILogger;
 
 namespace TarkyToolkit.Context
 {
@@ -12,7 +12,7 @@ namespace TarkyToolkit.Context
         // ReSharper disable once CollectionNeverQueried.Local
         private readonly Dictionary<string, InternalTarkyPatch> _enabledPatches = new Dictionary<string, InternalTarkyPatch>();
         public bool PatchesEnabled { get; private set; }
-        public ILogger Logger => TarkyToolkitPlugin.Logger;
+        public AsyncLogger Logger => TarkyToolkitPlugin.Logger;
 
         public void EnablePatches(InternalTarkyPatch[] toApply)
         {

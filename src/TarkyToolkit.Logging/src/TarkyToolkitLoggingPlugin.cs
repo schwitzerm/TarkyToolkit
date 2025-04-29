@@ -1,16 +1,16 @@
 ﻿using BepInEx;
 using JetBrains.Annotations;
-using TarkyToolkit.Logging;
 using TarkyToolkit.Shared.Logging;
 
-namespace TarkyToolkit.Core
+namespace TarkyToolkit.Logging
 {
     /// <summary>
     /// Stub to load binary. Needed to load and require this binary as a dependency in BepInEx.
     /// </summary>
-    [BepInPlugin("Mellow_.TarkyToolkit.Core", "TarkyToolkit.Core", "0.1.0")]
+    [BepInPlugin("Mellow_.TarkyToolkit.Logging", "TarkyToolkit.Logging", "0.1.0")]
     [BepInDependency("Mellow_.TarkyToolkit.Shared", "0.1.0")]
-    public class TarkyToolkitCorePlugin : BaseUnityPlugin
+    [BepInDependency("Mellow_.TarkyToolkit.Unity", "0.1.0")]
+    public class TarkyToolkitLoggingPlugin : BaseUnityPlugin
     {
         internal new static AsyncLogger Logger { get; private set; }
 

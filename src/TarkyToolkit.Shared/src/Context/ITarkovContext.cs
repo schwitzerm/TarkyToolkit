@@ -5,7 +5,7 @@ namespace TarkyToolkit.Shared.Context
 {
     public interface ITarkovContext
     {
-        ILogger Logger { get; }
+        AsyncLogger Logger { get; }
         GameWorld GameWorld { get; set; }
     }
 }

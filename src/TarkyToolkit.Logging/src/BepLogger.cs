@@ -12,21 +12,21 @@ namespace TarkyToolkit.Logging
     /// A thread-safe wrapper for BepInEx's ManualLogSource that ensures log messages are safely processed
     /// regardless of which thread they originate from.
     /// </summary>
-    public class BepLogger : IThreadSafeLogger, IDisposable
+    public class BepLogger : ThreadSafeLogger
     {
         private const int MAX_QUEUE_SIZE = 1000;
         private const int MAX_BATCH_SIZE = 50;
 
-        private readonly ManualLogSource _logger;
         private readonly ConcurrentQueue<LogMessage> _pendingLogs = new ConcurrentQueue<LogMessage>();
         private readonly ConcurrentQueue<LogMessage> _highPriorityLogs = new ConcurrentQueue<LogMessage>();
         private bool _processingStarted;
+        private ManualLogSource _logger;
         private MonoBehaviour _processingHost;
         private Coroutine _processingCoroutine;
         private bool _isDisposed;
         private readonly object _coroutineLock = new object();
 
-        public string SourceName => _logger.SourceName;
+        public override string SourceName => _logger.SourceName;
 
         /// <summary>
         /// Represents a queued log message with its associated log level
@@ -48,11 +48,8 @@ namespace TarkyToolkit.Logging
             }
         }
 
-        /// <param name="logger">The BepInEx ManualLogSource to wrap</param>
-        public BepLogger(ManualLogSource logger)
+        public BepLogger()
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
             // Ensure the main thread dispatcher exists
             UnityUtils.RunOnMainThread(() => { }, false);
         }
@@ -60,10 +57,12 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Sets up message processing using the specified MonoBehaviour
         /// </summary>
-        public void SetupProcessing(MonoBehaviour host)
+        public override void SetupProcessing(MonoBehaviour host, ManualLogSource logger)
         {
             if (_isDisposed) throw new ObjectDisposedException(nameof(BepLogger));
             if (host == null) throw new ArgumentNullException(nameof(host));
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             lock (_coroutineLock)
             {
@@ -105,10 +104,15 @@ namespace TarkyToolkit.Logging
             }
         }
 
+        public void SetupProcessing(MonoBehaviour host)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Stops the log processing coroutine if it's running
         /// </summary>
-        public void StopProcessing()
+        public override void StopProcessing()
         {
             lock (_coroutineLock)
             {
@@ -135,7 +139,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs an informational message
         /// </summary>
-        public void LogInfo(string message)
+        public override void LogInfo(string message)
         {
             if (_isDisposed) return;
 
@@ -160,7 +164,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs a debug message
         /// </summary>
-        public void LogDebug(string message)
+        public override void LogDebug(string message)
         {
             if (_isDisposed) return;
 
@@ -184,7 +188,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs a warning message
         /// </summary>
-        public void LogWarning(string message)
+        public override void LogWarning(string message)
         {
             if (_isDisposed) return;
 
@@ -208,7 +212,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Logs an error message
         /// </summary>
-        public void LogError(string message)
+        public override void LogError(string message)
         {
             if (_isDisposed) return;
 
@@ -409,7 +413,7 @@ namespace TarkyToolkit.Logging
         /// <summary>
         /// Disposes of resources used by the logger
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
             if (_isDisposed) return;
 

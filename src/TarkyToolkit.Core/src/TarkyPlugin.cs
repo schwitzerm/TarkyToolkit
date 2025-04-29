@@ -12,22 +12,18 @@ namespace TarkyToolkit.Core
         public static bool StoppedFatally { get; } = false;
         protected static TarkyPatchContext TarkyPatchContext { get; private set; }
         protected static TarkovContext TarkovContext { get; private set; }
-        public new static ILogger Logger { get; private set; }
+        public new static AsyncLogger Logger { get; private set; }
         public static string Name { get; private set; }
 
         protected TarkyPlugin()
         {
             TarkovContext = gameObject.GetComponent<TarkovContext>();
             TarkyPatchContext = gameObject.GetComponent<TarkyPatchContext>();
-            Logger = new BepLogger(base.Logger);
-            Name = GetType().Name;
-        }
-
-        protected TarkyPlugin(ILogger logger)
-        {
-            TarkovContext = gameObject.GetComponent<TarkovContext>();
-            TarkyPatchContext = gameObject.GetComponent<TarkyPatchContext>();
-            Logger = logger;
+            Logger = gameObject.GetComponent<StreamingLogger>();
+            if (Logger == null)
+            {
+                base.Logger.LogError("Welp.");
+            }
             Name = GetType().Name;
         }
     }

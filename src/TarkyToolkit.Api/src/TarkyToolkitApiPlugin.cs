@@ -14,12 +14,12 @@ namespace TarkyToolkit.Api
     public class TarkyToolkitApiPlugin : BaseUnityPlugin
     {
         private static GameWorldApi _gameWorldApi;
-        internal new static ILogger Logger { get; private set; }
+        internal new static AsyncLogger Logger { get; private set; }
 
         [UsedImplicitly]
         private void Awake()
         {
-            Logger = new BepLogger(base.Logger);
+            Logger = gameObject.GetComponent<StreamingLogger>();
             Logger.LogDebug("Initializing TarkyToolkit API.");
             _gameWorldApi = gameObject.AddComponent<GameWorldApi>();
             DontDestroyOnLoad(_gameWorldApi);

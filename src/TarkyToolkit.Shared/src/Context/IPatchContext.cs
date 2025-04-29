@@ -5,7 +5,7 @@ namespace TarkyToolkit.Shared.Context
 {
     public interface IPatchContext<T> where T : ITarkyPatch
     {
-        ILogger Logger { get; }
+        AsyncLogger Logger { get; }
         bool PatchesEnabled { get; }
         void EnablePatches(T[] toApply);
         void DisablePatches(T[] toDisable);
