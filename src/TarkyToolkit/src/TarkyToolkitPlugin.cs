@@ -38,7 +38,7 @@ public class TarkyToolkitPlugin : BaseUnityPlugin
             InternalTarkyPatch[] internalToApply =
             [
                 new Patch.GameWorld.RefOnAwakePatch(gameObject),
-                new Patch.GameWorld.DerefOnAwakePatch(gameObject)
+                new Patch.GameWorld.DerefOnDestroyPatch(gameObject)
             ];
             _internalTarkyPatchContext.EnablePatches(internalToApply);
 

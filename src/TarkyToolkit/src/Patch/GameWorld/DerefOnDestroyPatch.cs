@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TarkyToolkit.Patch.GameWorld;
 
-internal class DerefOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
+internal class DerefOnDestroyPatch(GameObject rootObject) : InternalTarkyPatch(rootObject)
 {
     public override bool FatalOnPatchError => true;
 
@@ -18,6 +18,7 @@ internal class DerefOnAwakePatch(GameObject rootObject) : InternalTarkyPatch(roo
     [UsedImplicitly]
     private static void Postfix()
     {
+        Logger.LogDebug("GameWorld destroyed by EFT Client. Dereferencing in TarkyToolkit.");
         TarkovContext.GameWorld = null;
     }
 }
