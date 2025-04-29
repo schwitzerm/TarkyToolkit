@@ -7,7 +7,7 @@ Set the environment variable `SPTCLIENTPLUGINSPATH` to... well where the SPT Cli
 
 To do so, run: `setx SPTCLIENTPLUGINSPATH "<YourPluginsPath>"`
 
-In my case (using Windows path separators...): `set SPTCLIENTPLUGINSPATH "E:\SPT\BepInEx\plugins"`
+In my case (using Windows path separators...): `setx SPTCLIENTPLUGINSPATH "E:\SPT\BepInEx\plugins"`
 
 Read the README files in each folder in lib to know what to put where. 
 If you don't like opening multiple files:
