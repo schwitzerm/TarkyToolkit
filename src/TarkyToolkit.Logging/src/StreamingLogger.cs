@@ -341,7 +341,7 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Disposes of resources...
+        /// Disposes of resources used by the logger
         /// </summary>
         public void Dispose()
         {
