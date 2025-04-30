@@ -19,7 +19,7 @@ namespace TarkyToolkit.Api
         [UsedImplicitly]
         private void Awake()
         {
-            Logger = gameObject.GetComponent<StreamingLogger>();
+            Logger = gameObject.GetComponent<BatchHttpLogger>();
             Logger.LogDebug("Initializing TarkyToolkit API.");
             _gameWorldApi = gameObject.AddComponent<GameWorldApi>();
             DontDestroyOnLoad(_gameWorldApi);

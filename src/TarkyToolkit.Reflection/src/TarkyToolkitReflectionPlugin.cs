@@ -17,7 +17,7 @@ namespace TarkyToolkit.Reflection
         [UsedImplicitly]
         private void Awake()
         {
-            Logger = gameObject.GetComponent<StreamingLogger>();
+            Logger = gameObject.GetComponent<BatchHttpLogger>();
         }
     }
 }

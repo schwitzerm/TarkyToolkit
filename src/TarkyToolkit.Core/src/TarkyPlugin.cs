@@ -19,7 +19,7 @@ namespace TarkyToolkit.Core
         {
             TarkovContext = gameObject.GetComponent<TarkovContext>();
             TarkyPatchContext = gameObject.GetComponent<TarkyPatchContext>();
-            Logger = gameObject.GetComponent<StreamingLogger>();
+            Logger = gameObject.GetComponent<BatchHttpLogger>();
             if (Logger == null)
             {
                 base.Logger.LogError("Welp.");

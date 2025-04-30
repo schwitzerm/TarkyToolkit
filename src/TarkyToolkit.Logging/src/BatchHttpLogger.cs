@@ -15,7 +15,7 @@ namespace TarkyToolkit.Logging
     /// A thread-safe logger that streams log messages to a remote endpoint.
     /// Uses a IThreadSafeLogger for local logging and fallback.
     /// </summary>
-    public class StreamingLogger : AsyncLogger
+    public class BatchHttpLogger : AsyncLogger
     {
         private const int MAX_QUEUE_SIZE = 1000;
 
@@ -53,7 +53,7 @@ namespace TarkyToolkit.Logging
         /// </summary>
         public override void SetupProcessing(MonoBehaviour host, string url, ThreadSafeLogger localLogger)
         {
-            if (_disposed) throw new ObjectDisposedException(nameof(StreamingLogger));
+            if (_disposed) throw new ObjectDisposedException(nameof(BatchHttpLogger));
             if (host == null) throw new ArgumentNullException(nameof(host));
 
             _streamUrl = url ?? throw new ArgumentNullException(nameof(url));

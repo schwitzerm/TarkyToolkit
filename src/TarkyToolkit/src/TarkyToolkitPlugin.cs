@@ -35,7 +35,7 @@ namespace TarkyToolkit
                 _localLogger = gameObject.AddComponent<BepLogger>();
                 _localLogger.SetupProcessing(this, base.Logger);
                 DontDestroyOnLoad(_localLogger);
-                Logger = gameObject.AddComponent<StreamingLogger>();
+                Logger = gameObject.AddComponent<BatchHttpLogger>();
                 Logger.SetupProcessing(this, "localhost:22322", _localLogger);
                 DontDestroyOnLoad(Logger);
 
