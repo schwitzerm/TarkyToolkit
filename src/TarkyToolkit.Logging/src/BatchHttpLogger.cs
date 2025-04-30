@@ -399,12 +399,10 @@ namespace TarkyToolkit.Logging
                     batchMessages.Add(message.FormattedMessage);
                 }
 
-                // Send all messages in a single batch if we have any and no batch is currently being processed
-                if (batchMessages.Count > 0 && !_batchProcessRunning)
-                {
-                    _batchProcessRunning = true;
-                    _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
-                }
+                // Send all messages in a single batch if we have any, and no batch is currently being processed
+                if (batchMessages.Count <= 0 || _batchProcessRunning) return;
+                _batchProcessRunning = true;
+                _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
             }
             catch (Exception ex)
             {
