@@ -1,4 +1,24 @@
-﻿
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit.LogServer", "src\TarkyToolkit.LogServer\TarkyToolkit.LogServer.csproj", "{A8C1B3D7-4D7E-4F5C-AE8D-B16C80D6E7A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8C1B3D7-4D7E-4F5C-AE8D-B16C80D6E7A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8C1B3D7-4D7E-4F5C-AE8D-B16C80D6E7A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8C1B3D7-4D7E-4F5C-AE8D-B16C80D6E7A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8C1B3D7-4D7E-4F5C-AE8D-B16C80D6E7A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TarkyToolkit", "src\TarkyToolkit\TarkyToolkit.csproj", "{37B2E4AA-1151-43A3-B415-642F0DFA044F}"
 EndProject
