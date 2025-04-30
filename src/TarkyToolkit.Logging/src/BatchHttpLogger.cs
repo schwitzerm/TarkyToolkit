@@ -393,6 +393,8 @@ namespace TarkyToolkit.Logging
                         case LogMessage.Level.Error:
                             _localLogger.LogError(message.Message);
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
 
                     // Add to the batch instead of sending immediately
