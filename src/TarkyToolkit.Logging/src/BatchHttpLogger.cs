@@ -126,8 +126,8 @@ namespace TarkyToolkit.Logging
             else
             {
                 // No need for lock here as ConcurrentQueue is thread-safe
-                _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Warning,
-                    "ProcessAllRemainingLogs called from a non-main thread. Some logs might be lost.",
+                _pendingLogs.Enqueue(
+                    new LogMessage(LogMessage.Level.Warning, "ProcessAllRemainingLogs called from a non-main thread. Some logs might be lost.",
                     FormatMessage("Warn", "ProcessAllRemainingLogs called from a non-main thread. Some logs might be lost.")));
             }
         }
@@ -141,16 +141,15 @@ namespace TarkyToolkit.Logging
 
             var formattedMessage = FormatMessage("Debug", message);
 
+            // Always use the queue for batching, regardless of thread
             if (UnityUtils.IsOnMainThread() && _coroutineRunner)
             {
                 _localLogger.LogDebug(message);
-                _coroutineRunner.StartCoroutine(SendLogCoroutine(formattedMessage));
             }
-            else
-            {
-                // No need for lock here as ConcurrentQueue is thread-safe
-                if (_pendingLogs.Count >= MAX_QUEUE_SIZE) return Task.CompletedTask;
 
+            // No need for lock here as ConcurrentQueue is thread-safe
+            if (_pendingLogs.Count < MAX_QUEUE_SIZE)
+            {
                 _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Debug, message, formattedMessage));
             }
 
@@ -164,18 +163,17 @@ namespace TarkyToolkit.Logging
         {
             if (_disposed) return Task.CompletedTask;
 
-            string formattedMessage = FormatMessage("Info", message);
+            var formattedMessage = FormatMessage("Info", message);
 
+            // Always use the queue for batching, regardless of thread
             if (UnityUtils.IsOnMainThread() && _coroutineRunner != null)
             {
                 _localLogger.LogInfo(message);
-                _coroutineRunner.StartCoroutine(SendLogCoroutine(formattedMessage));
             }
-            else
-            {
-                // No need for lock here as ConcurrentQueue is thread-safe
-                if (_pendingLogs.Count >= MAX_QUEUE_SIZE) return Task.CompletedTask;
 
+            // No need for lock here as ConcurrentQueue is thread-safe
+            if (_pendingLogs.Count < MAX_QUEUE_SIZE)
+            {
                 _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Info, message, formattedMessage));
             }
 
@@ -189,18 +187,17 @@ namespace TarkyToolkit.Logging
         {
             if (_disposed) return Task.CompletedTask;
 
-            string formattedMessage = FormatMessage("Warn", message);
+            var formattedMessage = FormatMessage("Warn", message);
 
+            // Always use the queue for batching, regardless of thread
             if (UnityUtils.IsOnMainThread() && _coroutineRunner != null)
             {
                 _localLogger.LogWarning(message);
-                _coroutineRunner.StartCoroutine(SendLogCoroutine(formattedMessage));
             }
-            else
-            {
-                // No need for lock here as ConcurrentQueue is thread-safe
-                if (_pendingLogs.Count >= MAX_QUEUE_SIZE) return Task.CompletedTask;
 
+            // No need for lock here as ConcurrentQueue is thread-safe
+            if (_pendingLogs.Count < MAX_QUEUE_SIZE)
+            {
                 _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Warning, message, formattedMessage));
             }
 
@@ -216,17 +213,15 @@ namespace TarkyToolkit.Logging
 
             string formattedMessage = FormatMessage("Error", message);
 
+            // Always use the queue for batching, regardless of thread
             if (UnityUtils.IsOnMainThread() && _coroutineRunner != null)
             {
                 _localLogger.LogError(message);
-                _coroutineRunner.StartCoroutine(SendLogCoroutine(formattedMessage));
             }
-            else
-            {
-                // No need for lock here as ConcurrentQueue is thread-safe
-                // For errors, ensure they get logged even if the queue is full
-                _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Error, message, formattedMessage));
-            }
+
+            // No need for lock here as ConcurrentQueue is thread-safe
+            // For errors, ensure they get logged even if the queue is full
+            _pendingLogs.Enqueue(new LogMessage(LogMessage.Level.Error, message, formattedMessage));
 
             return Task.CompletedTask;
         }
@@ -244,29 +239,6 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Coroutine to send a log message to the remote endpoint
-        /// </summary>
-        private IEnumerator SendLogCoroutine(string formattedMessage)
-        {
-            if (_disposed) yield break;
-
-            using (var request = new UnityWebRequest(_streamUrl, "POST"))
-            {
-                var bodyRaw = Encoding.UTF8.GetBytes(formattedMessage);
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                request.downloadHandler = new DownloadHandlerBuffer();
-                request.SetRequestHeader("Content-Type", "text/plain");
-
-                yield return request.SendWebRequest();
-
-                if (request.result != UnityWebRequest.Result.Success)
-                {
-                    _localLogger.LogError($"Failed to send log message to stream: {request.error}");
-                }
-            }
-        }
-
-        /// <summary>
         /// Coroutine that processes queued log messages on each frame update,
         /// batching them together for more efficient transmission
         /// </summary>
@@ -274,6 +246,9 @@ namespace TarkyToolkit.Logging
         {
             var batchMessages = new List<string>();
             var lastSendTime = Time.realtimeSinceStartup;
+            // Use a shorter time interval for batch sending since all logs now go through this system
+            const float batchTimeInterval = 5.0f;
+            const int maxBatchSize = 100;
 
             while (_processingStarted && !_disposed)
             {
@@ -282,23 +257,26 @@ namespace TarkyToolkit.Logging
                     // Process logs into a batch
                     while (_pendingLogs.TryDequeue(out var message))
                     {
-                        // Log to the local logger
-                        switch (message.LogLevel)
+                        // Log to the local logger if it hasn't been logged yet
+                        if (!UnityUtils.IsOnMainThread())
                         {
-                            case LogMessage.Level.Debug:
-                                _localLogger.LogDebug(message.Message);
-                                break;
-                            case LogMessage.Level.Info:
-                                _localLogger.LogInfo(message.Message);
-                                break;
-                            case LogMessage.Level.Warning:
-                                _localLogger.LogWarning(message.Message);
-                                break;
-                            case LogMessage.Level.Error:
-                                _localLogger.LogError(message.Message);
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
+                            switch (message.LogLevel)
+                            {
+                                case LogMessage.Level.Debug:
+                                    _localLogger.LogDebug(message.Message);
+                                    break;
+                                case LogMessage.Level.Info:
+                                    _localLogger.LogInfo(message.Message);
+                                    break;
+                                case LogMessage.Level.Warning:
+                                    _localLogger.LogWarning(message.Message);
+                                    break;
+                                case LogMessage.Level.Error:
+                                    _localLogger.LogError(message.Message);
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
                         }
 
                         // Add to the batch instead of sending immediately
@@ -308,7 +286,7 @@ namespace TarkyToolkit.Logging
                     // Send batched messages if we have any and enough time has passed
                     // or if we've accumulated enough messages
                     var currentTime = Time.realtimeSinceStartup;
-                    if (batchMessages.Count > 0 && (currentTime - lastSendTime > 30.0f || batchMessages.Count > 50))
+                    if (batchMessages.Count > 0 && (currentTime - lastSendTime > batchTimeInterval || batchMessages.Count >= maxBatchSize))
                     {
                         _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
                         batchMessages = new List<string>();
@@ -332,21 +310,42 @@ namespace TarkyToolkit.Logging
         {
             if (_disposed || messages.Count == 0) yield break;
 
-            using (var request = new UnityWebRequest(_streamUrl, "POST"))
+            const int maxRetries = 2;
+            int retryCount = 0;
+
+            while (retryCount <= maxRetries)
             {
-                // Join messages with newlines or use JSON array format depending on server requirements
-                var combinedMessage = string.Join("\n", messages);
-                var bodyRaw = Encoding.UTF8.GetBytes(combinedMessage);
-
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                request.downloadHandler = new DownloadHandlerBuffer();
-                request.SetRequestHeader("Content-Type", "text/plain");
-
-                yield return request.SendWebRequest();
-
-                if (request.result != UnityWebRequest.Result.Success)
+                using (var request = new UnityWebRequest(_streamUrl, "POST"))
                 {
-                    _localLogger.LogError($"Failed to send batched log messages to stream: {request.error}");
+                    // Just using new lines as separator for now...
+                    var combinedMessage = string.Join("\n", messages);
+                    var bodyRaw = Encoding.UTF8.GetBytes(combinedMessage);
+
+                    request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                    request.downloadHandler = new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Content-Type", "text/plain");
+                    request.timeout = 5; // Set a reasonable timeout in seconds
+
+                    yield return request.SendWebRequest();
+
+                    if (request.result == UnityWebRequest.Result.Success)
+                    {
+                        // Successfully sent batch
+                        break;
+                    }
+                    else if (retryCount < maxRetries)
+                    {
+                        _localLogger.LogWarning($"Failed to send batched log messages (attempt {retryCount+1}/{maxRetries+1}): {request.error}. Retrying...");
+                        retryCount++;
+                        // Wait a bit before retry
+                        yield return new WaitForSeconds(0.5f * retryCount);
+                    }
+                    else
+                    {
+                        _localLogger.LogError($"Failed to send batched log messages after {maxRetries+1} attempts: {request.error}");
+                        // Could add fallback storage of failed messages here if needed
+                        break;
+                    }
                 }
             }
         }
@@ -360,6 +359,8 @@ namespace TarkyToolkit.Logging
 
             try
             {
+                var batchMessages = new List<string>();
+
                 while (_pendingLogs.TryDequeue(out var message))
                 {
                     // Log to the local logger
@@ -379,8 +380,14 @@ namespace TarkyToolkit.Logging
                             break;
                     }
 
-                    // Send it to the remote endpoint
-                    _coroutineRunner.StartCoroutine(SendLogCoroutine(message.FormattedMessage));
+                    // Add to the batch instead of sending immediately
+                    batchMessages.Add(message.FormattedMessage);
+                }
+
+                // Send all messages in a single batch if we have any
+                if (batchMessages.Count > 0)
+                {
+                    _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
                 }
             }
             catch (Exception ex)
