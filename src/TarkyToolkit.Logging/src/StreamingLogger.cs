@@ -7,6 +7,7 @@ using TarkyToolkit.Shared.Logging;
 using TarkyToolkit.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace TarkyToolkit.Logging
 {
@@ -266,15 +267,53 @@ namespace TarkyToolkit.Logging
         }
 
         /// <summary>
-        /// Coroutine that processes queued log messages on each frame update
+        /// Coroutine that processes queued log messages on each frame update,
+        /// batching them together for more efficient transmission
         /// </summary>
         private IEnumerator ProcessLogQueue()
         {
+            var batchMessages = new List<string>();
+            var lastSendTime = Time.realtimeSinceStartup;
+
             while (_processingStarted && !_disposed)
             {
                 try
                 {
-                    ProcessPendingLogs();
+                    // Process logs into a batch
+                    while (_pendingLogs.TryDequeue(out var message))
+                    {
+                        // Log to the local logger
+                        switch (message.LogLevel)
+                        {
+                            case LogMessage.Level.Debug:
+                                _localLogger.LogDebug(message.Message);
+                                break;
+                            case LogMessage.Level.Info:
+                                _localLogger.LogInfo(message.Message);
+                                break;
+                            case LogMessage.Level.Warning:
+                                _localLogger.LogWarning(message.Message);
+                                break;
+                            case LogMessage.Level.Error:
+                                _localLogger.LogError(message.Message);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        // Add to the batch instead of sending immediately
+                        batchMessages.Add(message.FormattedMessage);
+                    }
+
+                    // Send batched messages if we have any and enough time has passed
+                    // or if we've accumulated enough messages
+                    var currentTime = Time.realtimeSinceStartup;
+                    if (batchMessages.Count > 0 && (currentTime - lastSendTime > 30.0f || batchMessages.Count > 50))
+                    {
+                        _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
+                        batchMessages = new List<string>();
+                        lastSendTime = currentTime;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -282,6 +321,33 @@ namespace TarkyToolkit.Logging
                 }
 
                 yield return null; // Wait for the next frame
+            }
+        }
+
+        /// <summary>
+        /// Sends a batch of log messages in a single HTTP request
+        /// </summary>
+        /// <param name="messages">Collection of formatted log messages to send</param>
+        private IEnumerator SendBatchedLogsCoroutine(List<string> messages)
+        {
+            if (_disposed || messages.Count == 0) yield break;
+
+            using (var request = new UnityWebRequest(_streamUrl, "POST"))
+            {
+                // Join messages with newlines or use JSON array format depending on server requirements
+                var combinedMessage = string.Join("\n", messages);
+                var bodyRaw = Encoding.UTF8.GetBytes(combinedMessage);
+
+                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "text/plain");
+
+                yield return request.SendWebRequest();
+
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    _localLogger.LogError($"Failed to send batched log messages to stream: {request.error}");
+                }
             }
         }
 

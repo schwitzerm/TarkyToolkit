@@ -39,7 +39,7 @@ namespace TarkyToolkit.TestSoftFailPlugin
             try
             {
                 _timeDiff += Time.deltaTime;
-                if (!(_timeDiff > 10f)) return;
+                if (!(_timeDiff > 0.5f)) return;
 
                 _timeDiff = 0f;
                 Logger.LogDebug("TestSoftFailPlugin is alive.");
