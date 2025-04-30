@@ -27,6 +27,7 @@ namespace TarkyToolkit.Logging
         private bool _disposed;
         private string _streamUrl;
         private ThreadSafeLogger _localLogger;
+        private bool _batchProcessRunning;
 
         public override string SourceName => _localLogger.SourceName;
 
@@ -284,10 +285,12 @@ namespace TarkyToolkit.Logging
                     }
 
                     // Send batched messages if we have any and enough time has passed
-                    // or if we've accumulated enough messages
+                    // or if we've accumulated enough messages, but only if no batch is currently being processed
                     var currentTime = Time.realtimeSinceStartup;
-                    if (batchMessages.Count > 0 && (currentTime - lastSendTime > batchTimeInterval || batchMessages.Count >= maxBatchSize))
+                    if (batchMessages.Count > 0 && !_batchProcessRunning &&
+                        (currentTime - lastSendTime > batchTimeInterval || batchMessages.Count >= maxBatchSize))
                     {
+                        _batchProcessRunning = true;
                         _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
                         batchMessages = new List<string>();
                         lastSendTime = currentTime;
@@ -308,45 +311,57 @@ namespace TarkyToolkit.Logging
         /// <param name="messages">Collection of formatted log messages to send</param>
         private IEnumerator SendBatchedLogsCoroutine(List<string> messages)
         {
-            if (_disposed || messages.Count == 0) yield break;
+            if (_disposed || messages.Count == 0)
+            {
+                _batchProcessRunning = false;
+                yield break;
+            }
 
             const int maxRetries = 2;
             int retryCount = 0;
 
-            while (retryCount <= maxRetries)
+            try
             {
-                using (var request = new UnityWebRequest(_streamUrl, "POST"))
+                while (retryCount <= maxRetries)
                 {
-                    // Just using new lines as separator for now...
-                    var combinedMessage = string.Join("\n", messages);
-                    var bodyRaw = Encoding.UTF8.GetBytes(combinedMessage);
-
-                    request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                    request.downloadHandler = new DownloadHandlerBuffer();
-                    request.SetRequestHeader("Content-Type", "text/plain");
-                    request.timeout = 5; // Set a reasonable timeout in seconds
-
-                    yield return request.SendWebRequest();
-
-                    if (request.result == UnityWebRequest.Result.Success)
+                    using (var request = new UnityWebRequest(_streamUrl, "POST"))
                     {
-                        // Successfully sent batch
-                        break;
-                    }
-                    else if (retryCount < maxRetries)
-                    {
-                        _localLogger.LogWarning($"Failed to send batched log messages (attempt {retryCount+1}/{maxRetries+1}): {request.error}. Retrying...");
-                        retryCount++;
-                        // Wait a bit before retry
-                        yield return new WaitForSeconds(0.5f * retryCount);
-                    }
-                    else
-                    {
-                        _localLogger.LogError($"Failed to send batched log messages after {maxRetries+1} attempts: {request.error}");
-                        // Could add fallback storage of failed messages here if needed
-                        break;
+                        // Just using new lines as separator for now...
+                        var combinedMessage = string.Join("\n", messages);
+                        var bodyRaw = Encoding.UTF8.GetBytes(combinedMessage);
+
+                        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                        request.downloadHandler = new DownloadHandlerBuffer();
+                        request.SetRequestHeader("Content-Type", "text/plain");
+                        request.timeout = 5; // Set a reasonable timeout in seconds
+
+                        yield return request.SendWebRequest();
+
+                        if (request.result == UnityWebRequest.Result.Success)
+                        {
+                            // Successfully sent batch
+                            break;
+                        }
+                        else if (retryCount < maxRetries)
+                        {
+                            _localLogger.LogWarning($"Failed to send batched log messages (attempt {retryCount+1}/{maxRetries+1}): {request.error}. Retrying...");
+                            retryCount++;
+                            // Wait a bit before retry
+                            yield return new WaitForSeconds(0.5f * retryCount);
+                        }
+                        else
+                        {
+                            _localLogger.LogError($"Failed to send batched log messages after {maxRetries+1} attempts: {request.error}");
+                            // Could add fallback storage of failed messages here if needed
+                            break;
+                        }
                     }
                 }
+            }
+            finally
+            {
+                // Always clear the batch processing flag when completed
+                _batchProcessRunning = false;
             }
         }
 
@@ -384,9 +399,10 @@ namespace TarkyToolkit.Logging
                     batchMessages.Add(message.FormattedMessage);
                 }
 
-                // Send all messages in a single batch if we have any
-                if (batchMessages.Count > 0)
+                // Send all messages in a single batch if we have any and no batch is currently being processed
+                if (batchMessages.Count > 0 && !_batchProcessRunning)
                 {
+                    _batchProcessRunning = true;
                     _coroutineRunner.StartCoroutine(SendBatchedLogsCoroutine(batchMessages));
                 }
             }
