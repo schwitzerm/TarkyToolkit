@@ -151,13 +151,13 @@ namespace TarkyToolkit.Logging
                 }
                 catch (Exception ex)
                 {
-                    TryDirectErrorLog($"Error logging error message: {ex.Message}");
+                    TryDirectErrorLog($"Error logging info message: {ex.Message}");
                 }
             }
             else
             {
-                // Errors go to the high-priority queue
-                _highPriorityLogs.Enqueue(new LogMessage(LogMessage.Level.Error, message));
+                // Info messages go to the regular queue
+                EnqueueMessage(LogMessage.Level.Info, message);
             }
         }
 

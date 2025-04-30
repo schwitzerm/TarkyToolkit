@@ -42,6 +42,12 @@
       <Reference Include="BepInEx">
         <HintPath>..\..\lib\BepInEx\BepInEx.dll</HintPath>
       </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\lib\TarkovManaged\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json.UnityConverters">
+        <HintPath>..\..\lib\TarkovManaged\Newtonsoft.Json.UnityConverters.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine">
         <HintPath>..\..\lib\TarkovManaged\UnityEngine.dll</HintPath>
       </Reference>
